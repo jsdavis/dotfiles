@@ -1,5 +1,6 @@
 # vimrc
-My personal .vimrc file shared in case it might be useful to others. Included in my .vimrc are many vim plugins that I find to be useful. I use Vundle to manage them. Below are links to all of my plugins
+My personal .vimrc file shared in case it might be useful to others. Included in my .vimrc are many vim plugins that
+I find to be useful. I use Vundle to manage them. Below are links to all of my plugins
 
 Vundle:            Package manager that keeps my plugin files in order and up to date
                    https://github.com/gmarik/Vundle.vim

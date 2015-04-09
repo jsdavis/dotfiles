@@ -12,8 +12,10 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 
-"Make it pretty
+"Molokai color theme
 Plugin 'tomasr/molokai'
+
+"Airline
 Plugin 'bling/vim-airline'
 
 "NERDTree
@@ -84,16 +86,16 @@ set incsearch                   "incremental search
 set hlsearch                    "highlighted search
 set ignorecase                  "ignore cases in search
 set fileformats=unix,dos,mac    "open files from all OS
-set exrc                        "open local configs
+set exrc                        "make it easy to implement local .vimrc
 set nojoinspaces                "don't make random whitespace
-set showmatch                   "show matched parentheses
-set expandtab                   "make tabs into spaces
+set showmatch                   "show matched parentheses/brackets
+set expandtab                   "expand tabs into spaces
 set tabstop=2                   "make tabs 2 spaces
 set softtabstop=2               "make tabs 2 spaces
 set shiftwidth=2                "make tabs 2 spaces
-set autoindent                  "autoindent
+set autoindent                  "keep indents when making new lines
 set noerrorbells                "don't yell at me
-set virtualedit=onemore         "let cursor go one more
+set virtualedit=onemore         "let cursor go past end of line
 set linespace=0                 "no space between lines
 set winminheight=0              "minimum window height zero lines
 set scrolloff=3                 "don't allow cursor less than 3 lines from edge
@@ -108,7 +110,7 @@ syntax on                       "highlighting is a necessity
 
 :colors molokai "Color scheme
 
-command! C nohlsearch "Clear highlighted search with :C
+command! C let @/ = "" "Clear last search pattern with :C
 
 "Add mouse support
 if has('mouse')
@@ -146,6 +148,9 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>x :x<cr>
 nnoremap <leader>w :w<cr>
+
+"Easy Java compiling and running
+noremap <F5> :w<cr>:!javac %<cr>
 
 "Get to normal mode with jk in insert mode
 inoremap jk <esc>

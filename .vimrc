@@ -20,6 +20,8 @@ Plugin 'bling/vim-airline'
 
 "NERDTree
 Plugin 'scrooloose/nerdtree'
+
+"NERDTree Tabs
 Plugin 'jistr/vim-nerdtree-tabs'
 
 "Syntastic
@@ -33,6 +35,9 @@ Plugin 'ntpeters/vim-better-whitespace'
 
 "NERDCommenter
 Plugin 'scrooloose/nerdcommenter'
+
+"HTML-AutoCloseTag
+Plugin 'vim-scripts/HTML-AutoCloseTag'
 
 call vundle#end()
 

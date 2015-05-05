@@ -64,6 +64,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+nnoremap <leader>ln :lnext<cr>
+nnoremap <leader>lp :lprevious<cr>
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -144,6 +147,10 @@ noremap <silent> _ g_
 "Better tab navigation
 nnoremap <C-J> :tabnext<CR>
 nnoremap <C-K> :tabprevious<CR>
+
+"Better undo/redo
+nnoremap U <C-R>
+nnoremap <C-R> U
 
 "Easily edit and source .vimrc
 nnoremap <leader>ev :tabe $MYVIMRC<cr>

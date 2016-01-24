@@ -126,11 +126,3 @@ fi
 
 # Get rid of stupid Java warning stuff
 unset JAVA_TOOL_OPTIONS
-
-# Make ieng6 operations easier
-wifipi=pi@spispis-30faz.dynamic.ucsd.edu
-rpi=pi@192.168.2.2
-cs30=cs30faz@ieng6.ucsd.edu
-alias ssh30='ssh -XY ${cs30}'
-alias sshwpi='ssh -XY ${wifipi}'
-alias sshpi='ssh -XY ${rpi}'

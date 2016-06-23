@@ -77,6 +77,9 @@ alias gco='git checkout'
 alias gb='git branch'
 alias ga='git add'
 alias gd='git diff'
+alias gpsh='git push'
+alias gpul='git pull'
+alias gf='git fetch'
 
 # Laziness
 alias v='vim'

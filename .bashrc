@@ -18,7 +18,7 @@ fi
 # $bldpur   --> Purple
 # ->        --> "-> "
 # $txtrst   --> Default color
-PS1='$bldpur\$$bldgrn\w$bldpur-> $txtrst'
+PS1='\[$bldpur\]\$\[$bldgrn\]\w\[$bldpur\]-> \[$txtrst\]'
 
 ###############################################################################
 # History things

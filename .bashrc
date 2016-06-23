@@ -1,7 +1,9 @@
 # Add useful git things
-for file in ~/dotfiles/git; do
-    source $file
-done
+source ~/dotfiles/git/git-completion.bash
+source ~/dotfiles/git/git-prompt.sh
+
+# Nice color variables
+source ~/dotfiles/colors.sh
 
 # .bashrc.local if applicable
 if [ -f ~/.bashrc.local ]; then
@@ -9,7 +11,14 @@ if [ -f ~/.bashrc.local ]; then
 fi
 
 # Set the prompt to '$|#(Working Dir)-> '
-PS1='\[\033[1;35m\]\$\[\033[1;32m\]\w\[\033[1;35m\]-> \[\033[0;37m\]'
+# $bldpur   --> Purple
+# \$        --> $ for user, # for root
+# $bldgrn   --> Green
+# \w        --> Working directory
+# $bldpur   --> Purple
+# ->        --> "-> "
+# $txtrst   --> Default color
+PS1='$bldpur\$$bldgrn\w$bldpur-> $txtrst'
 
 ###############################################################################
 # History things

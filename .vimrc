@@ -176,8 +176,9 @@ nnoremap <leader>q :q<cr>
 nnoremap <leader>x :x<cr>
 nnoremap <leader>w :w<cr>
 
-"Easy Java compiling
-noremap <F5> :w<cr>:!javac %<cr>
+"Add newlines in command mode
+nnoremap q o<esc>
+nnoremap Q O<esc>
 
 "Get to normal mode with jk in insert mode
 inoremap jk <esc>

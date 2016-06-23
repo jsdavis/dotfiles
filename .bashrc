@@ -25,6 +25,10 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 PS1='\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]'
 
+if [ -n "$SSH_TTY" ]; then
+    export PS1 = '\[$bldred\]{\h}$PS1'
+fi
+
 ###############################################################################
 # History things
 

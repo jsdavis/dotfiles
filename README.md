@@ -1,4 +1,3 @@
 # Dotfiles
 
-My bash and vim settings. On GitHub because I frequently have to set up new profiles for
-school. Also backups
+bash and vim settings. Includes a setup.sh script to automatically create symlinks to the files in this folder, which simplifies keeping it up to date through git.

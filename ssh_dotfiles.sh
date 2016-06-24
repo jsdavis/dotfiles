@@ -10,7 +10,8 @@ echo
 echo "Copying dotfiles"
 
 dir=$(pwd)
-scp -r $dir "$1":~/ > /dev/null
+scp -r "$dir" "$1":~/ > /dev/null
+ssh "$1" "rm -rf ~/dotfiles/.git"
 
 echo
 read -p "Done. Press [Enter] to exit."

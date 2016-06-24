@@ -99,3 +99,8 @@ alias c='clear'
 # For when we forget sudo
 alias fuck='sudo $(history -p !!)'
 alias FUCK='sudo "$BASH" -c "$(history -p !!)'
+
+# For moving easily
+alias .='cd ..'
+alias ..='cd ../..'
+alias ...='cd ../../..'

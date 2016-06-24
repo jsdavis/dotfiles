@@ -93,3 +93,5 @@ alias gf='git fetch'
 
 # Laziness
 alias v='vim'
+
+alias c='clear'

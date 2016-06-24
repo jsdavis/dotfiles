@@ -95,3 +95,6 @@ alias gf='git fetch'
 alias v='vim'
 
 alias c='clear'
+
+# For when we forget sudo
+alias fuck='sudo $(history -p !!)'

@@ -62,7 +62,7 @@ case $OSTYPE in
     "linux-gnu")
         LS_OPTS="--color=auto --group-directories-first"
         ;;
-    "darwin*")
+    darwin*)
         LS_OPTS="-G"
         ;;
 esac
@@ -75,9 +75,9 @@ alias fgrep='fgrep $LS_OPTS'
 alias egrep='egrep $LS_OPTS'
 
 # ls aliases
+alias l='ls -CF'
 alias ll='ls -alhF'
 alias la='ls -A'
-alias l='ls -CF'
 
 # git aliases
 alias gc='git commit -m'

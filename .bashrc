@@ -25,8 +25,9 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 PS1='\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]'
 
+# Show host in ssh sessions
 if [ -n "$SSH_TTY" ]; then
-    export PS1 = '\[$bldred\]{\h}$PS1'
+    export PS1="\[$bldcyn\]\h$PS1"
 fi
 
 ###############################################################################
@@ -57,16 +58,25 @@ alias rm='rm -i'
 alias mv='mv -i'
 
 # Colorful command outputs
-alias ls='ls -G'
-alias dir='dir -G'
-alias vdir='vdir -G'
-alias grep='grep -G'
-alias fgrep='fgrep -G'
-alias egrep='egrep -G'
+case $OSTYPE in
+    "linux-gnu")
+        LS_OPTS="--color=auto --group-directories-first"
+        ;;
+    "darwin*")
+        LS_OPTS="-G"
+        ;;
+esac
+
+alias ls='ls $LS_OPTS'
+alias dir='dir $LS_OPTS'
+alias vdir='vdir $LS_OPTS'
+alias grep='grep $LS_OPTS'
+alias fgrep='fgrep $LS_OPTS'
+alias egrep='egrep $LS_OPTS'
 
 # ls aliases
 alias ll='ls -alhF'
-alias la='ls -A --group-directories-first'
+alias la='ls -A'
 alias l='ls -CF'
 
 # git aliases

@@ -200,7 +200,6 @@ cabbrev e edit
 vnoremap G G$
 
 "Wrap text to 80 lines and highlight any lines that go over 80 chars
-match ErrorMsg '\%>90v.\+'
 setlocal textwidth=90
 if exists('&breakindent')
  set breakindent   "Indent wrapped lines up to the same level

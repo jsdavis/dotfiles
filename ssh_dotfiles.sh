@@ -7,11 +7,15 @@ if [ "$#" -ne 1 ]; then
 fi
 
 echo
-echo "Copying dotfiles"
+echo "Copying dotfiles..."
 
 dir=$(pwd)
 scp -r "$dir" "$1":~/ > /dev/null
+
+echo
+echo "Removing .git files..."
 ssh "$1" "rm -rf ~/dotfiles/.git"
 
 echo
-read -p "Done. Press [Enter] to exit."
+echo "Done."
+echo

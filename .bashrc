@@ -59,8 +59,8 @@ shopt -s checkwinsize
 # Alias things
 
 # Easy source
-alias loadrc='source ~/.bashrc'
-alias loadpr='source ~/.bash_profile'
+alias loadrc="source $DOTFILES/.bashrc"
+alias loadpr="source $DOTFILES/.bash_profile"
 
 # Try not to clobber things
 alias rm='rm -i'

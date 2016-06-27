@@ -1,9 +1,18 @@
+# TODO: Add DOTFILES portability
+
+# I want my bash stuff when root
+if [[ $SUDO_USER ]]; then
+    export DOTFILES=/home/$SUDO_USER/dotfiles
+else
+    export DOTFILES=~/dotfiles
+fi
+
 # Add useful git things
-source ~/dotfiles/git/git-completion.bash
-source ~/dotfiles/git/git-prompt.sh
+source "$DOTFILES/git/git-completion.bash"
+source "$DOTFILES/git/git-prompt.sh"
 
 # Nice color variables
-source ~/dotfiles/colors.sh
+source "$DOTFILES/colors.sh"
 
 # .bashrc.local if applicable
 if [ -f ~/.bashrc.local ]; then

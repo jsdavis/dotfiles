@@ -2,6 +2,7 @@
 
 import os
 import glob
+import filecmp
 import platform
 
 print "\nSetting up dotfiles...\n"
@@ -16,6 +17,7 @@ home = os.path.expanduser("~") + slash
 # Get list of files to set up
 files = glob.glob(dir + slash + ".*")
 for file in files:
+    # Remove directories from list
     if os.path.isdir(file):
         files.remove(file)
 
@@ -27,8 +29,15 @@ for file in files:
 
     # Don't clobber dotfiles that exist already
     try:
-        os.rename(homefile, homefile + ".bak")
-        print "{0} exists. Moved to {0}.bak".format(filename)
+        # Don't backup dotfiles that are the same
+        if not filecmp.cmp(homefile, file, False):
+            os.rename(homefile, homefile + ".bak")
+            print "{0} exists. Moved to {0}.bak".format(filename)
+
+        # Delete original if same. Not efficient, but cleaner logic
+        else:
+            os.remove(homefile)
+
     except OSError:
         pass
 
@@ -40,7 +49,3 @@ print "Symlinks to the dotfiles have been created."
 
 # TODO
 # Make .bashrc more flexible for path to git functions
-
-# TODO
-# Check if setup is replacing symlinks with the same symlink.
-# Don't backup in that scenario

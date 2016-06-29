@@ -32,7 +32,7 @@ fi
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
-PS1='\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]'
+PS1="\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]"
 
 # Show host in ssh sessions
 if [ -n "$SSH_TTY" ]; then
@@ -69,7 +69,7 @@ alias mv='mv -i'
 # Colorful command outputs
 case $OSTYPE in
     "linux-gnu")
-        LS_OPTS="--color=auto --group-directories-first"
+        LS_OPTS="--color=auto"
         ;;
     darwin*)
         LS_OPTS="-G"
@@ -100,9 +100,8 @@ alias gpsh='git push'
 alias gpul='git pull'
 alias gf='git fetch'
 
-# Laziness
+# Why type more than one letter?
 alias v='vim'
-
 alias c='clear'
 
 # For when we forget sudo

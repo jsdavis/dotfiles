@@ -75,6 +75,7 @@ case $OSTYPE in
         LS_OPTS="-G"
         ;;
 esac
+export LS_OPTS="-F $LS_OPTS"
 
 alias ls='ls $LS_OPTS'
 alias dir='dir $LS_OPTS'
@@ -84,8 +85,8 @@ alias fgrep='fgrep $LS_OPTS'
 alias egrep='egrep $LS_OPTS'
 
 # ls aliases
-alias l='ls -CF'
-alias ll='ls -alhF'
+alias l='ls -C'
+alias ll='ls -alh'
 alias la='ls -A'
 
 # git aliases

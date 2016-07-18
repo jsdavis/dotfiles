@@ -32,11 +32,14 @@ fi
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
-PS1='\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]'
+START='\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")'
+END='-> \[$txtrst\]'
 
 # Show host in ssh sessions
 if [ -n "$SSH_TTY" ]; then
-    export PS1="\[$bldcyn\]\h$PS1"
+    export PS1="\[$bldcyn\]\$\h$START\[$bldcyn\]$END"
+else
+    export PS1="\[$bldpur\]\$$START\[$bldpur\]$END"
 fi
 
 ###############################################################################
@@ -61,6 +64,11 @@ shopt -s checkwinsize
 # Easy source
 alias loadrc="source $DOTFILES/.bashrc"
 alias loadpr="source $DOTFILES/.bash_profile"
+
+#Easy edit
+alias vrc="vim $DOTFILES/.bashrc"
+alias vpr="vim $DOTFILES/.bash_profile"
+alias vimrc="vim $DOTFILES/.vimrc"
 
 # Try not to clobber things
 alias rm='rm -i'
@@ -93,12 +101,12 @@ alias la='ls -A'
 alias gc='git commit -m'
 alias gca='git commit -am'
 alias gs='git status'
-alias gco='git checkout'
+alias gch='git checkout'
 alias gb='git branch'
 alias ga='git add'
 alias gd='git diff'
 alias gpsh='git push'
-alias gpul='git pull'
+alias gpl='git pull'
 alias gf='git fetch'
 
 # Why type more than one letter?
@@ -107,7 +115,6 @@ alias c='clear'
 
 # For when we forget sudo
 alias fuck='sudo $(history -p !!)'
-alias FUCK='sudo "$BASH" -c "$(history -p !!)'
 
 # For moving easily
 alias .='cd ..'

@@ -3,48 +3,49 @@ set nocompatible                "no vi compatibility
 "Change leader to ,
 let mapleader = ","
 
-"********************** Vundle Settings *************************
+"********************** Vim Plug Settings *************************
 
-filetype off
-set rtp+=~/dotfiles/.vim/bundle/Vundle.vim
-set shell=/bin/bash
-call vundle#begin('~/dotfiles/.vim/bundle/Vundle.vim')
+" Auto install vim-plug if it's not installed already
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/dotfiles/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
 
-Plugin 'gmarik/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 "Molokai color theme
-Plugin 'tomasr/molokai'
+Plug 'tomasr/molokai'
 
 "Airline
-Plugin 'bling/vim-airline'
+Plug 'bling/vim-airline'
 
 "NERDTree
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
 "NERDTree Tabs
-Plugin 'jistr/vim-nerdtree-tabs'
+Plug 'jistr/vim-nerdtree-tabs'
 
 "Syntastic
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 
 "delimitMate
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 
 "better whitespace
-Plugin 'ntpeters/vim-better-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
 
 "NERDCommenter
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 
 "HTML-AutoCloseTag
-Plugin 'vim-scripts/HTML-AutoCloseTag'
+Plug 'vim-scripts/HTML-AutoCloseTag'
 
 "Better JS Support
-Plugin 'pangloss/vim-javascript'
-Plugin 'pangloss/vim-jsx'
+Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-jsx'
 
-call vundle#end()
-filetype plugin indent on
+call plug#end()
 
 "Airline settings
 set laststatus=2
@@ -128,7 +129,6 @@ set virtualedit=onemore         "let cursor go past end of line
 set winminheight=0              "minimum window height zero lines
 set shellslash                  "fix Cygwin and Syntastic
 
-syntax on                       "highlighting is a necessity
 
 :colors molokai "Color scheme COMMENT OUT FOR COMPATIBILITY
 ":colors elflord "UNCOMMENT FOR COMPATIBILITY

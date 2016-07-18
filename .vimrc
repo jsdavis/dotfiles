@@ -21,10 +21,10 @@ Plug 'tomasr/molokai'
 Plug 'bling/vim-airline'
 
 "NERDTree
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 "NERDTree Tabs
-Plug 'jistr/vim-nerdtree-tabs'
+Plug 'jistr/vim-nerdtree-tabs', { 'on': 'NERDTreeToggle' }
 
 "Syntastic
 Plug 'scrooloose/syntastic'
@@ -39,11 +39,11 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'scrooloose/nerdcommenter'
 
 "HTML-AutoCloseTag
-Plug 'vim-scripts/HTML-AutoCloseTag'
+Plug 'vim-scripts/HTML-AutoCloseTag', { 'for': ['html', 'javascript'] }
 
 "Better JS Support
-Plug 'pangloss/vim-javascript'
-Plug 'pangloss/vim-jsx'
+Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'jsx'] }
+Plug 'pangloss/vim-jsx', { 'for': 'jsx' }
 
 call plug#end()
 

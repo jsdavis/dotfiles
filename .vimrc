@@ -5,83 +5,88 @@ let mapleader = ","
 
 "********************** Vundle Settings *************************
 
-filetype plugin indent on
-"set rtp+=~/.vim/bundle/Vundle.vim
+filetype off
+set rtp+=~/dotfiles/.vim/bundle/Vundle.vim
 set shell=/bin/bash
-"call vundle#begin()
+call vundle#begin('~/dotfiles/.vim/bundle/Vundle.vim')
 
-"Plugin 'gmarik/Vundle.vim'
+Plugin 'gmarik/Vundle.vim'
 
 "Molokai color theme
-"Plugin 'tomasr/molokai'
+Plugin 'tomasr/molokai'
 
 "Airline
-"Plugin 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 
 "NERDTree
-"Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 
 "NERDTree Tabs
-"Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'jistr/vim-nerdtree-tabs'
 
 "Syntastic
-"Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 
 "delimitMate
-"Plugin 'Raimondi/delimitMate'
+Plugin 'Raimondi/delimitMate'
 
 "better whitespace
-"Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'ntpeters/vim-better-whitespace'
 
 "NERDCommenter
-"Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdcommenter'
 
 "HTML-AutoCloseTag
-"Plugin 'vim-scripts/HTML-AutoCloseTag'
+Plugin 'vim-scripts/HTML-AutoCloseTag'
 
-"call vundle#end()
+"Better JS Support
+Plugin 'pangloss/vim-javascript'
+Plugin 'pangloss/vim-jsx'
+
+call vundle#end()
+filetype plugin indent on
 
 "Airline settings
-"set laststatus=2
+set laststatus=2
 "let g:airline_powerline_fonts=1 "COMMENT OUT FOR COMPATIBILITY
-"let g:airline_powerline_fonts=0 "UNCOMMENT FOR COMPATIBILITY
-"let g:airline_detect_paste=1
-"let g:airline#extensions#tabline#enabled=1
-"let g:airline#extensions#show_buffers=0
-"let g:airline#extensions#tabline#tab_min_count=2
-"let g:airline_theme = 'molokai'
+let g:airline_powerline_fonts=0 "UNCOMMENT FOR COMPATIBILITY
+let g:airline_detect_paste=1
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#show_buffers=0
+let g:airline#extensions#tabline#tab_min_count=2
+let g:airline_theme = 'molokai'
 
-"set encoding=utf-8
+set encoding=utf-8
 "set guifont=PowerlineConsolas:h10 "COMMENT OUT FOR COMPATIBILITY
 
 "NERDTree Settings
-"nmap <silent><leader>t :NERDTreeTabsToggle<CR>
+nmap <silent><leader>t :NERDTreeTabsToggle<CR>
 
 "Syntastic Settings
 "let g:syntastic_error_symbol ='✘'
 "let g:syntastic_warning_symbol= '▲'
 "let g:syntastic_enable_signs = 0
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_debug = 0
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_debug = 0
 
-"nnoremap <leader>ln :lnext<cr>
-"nnoremap <leader>lp :lprevious<cr>
+nnoremap <leader>ln :lnext<cr>
+nnoremap <leader>lp :lprevious<cr>
 
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 "Better whitespace settings
-"augroup togglestrip
-  "au!
-  "autocmd VimEnter * CurrentLineWhitespaceOff soft
-  "autocmd VimEnter * ToggleStripWhitespaceOnSave
-"augroup END
+augroup togglestrip
+  au!
+  autocmd VimEnter * CurrentLineWhitespaceOff soft
+  autocmd VimEnter * ToggleStripWhitespaceOnSave
+augroup END
 
 "NERDCommenter Settings
-"let g:NERDSpaceDelims=1
+let g:NERDSpaceDelims=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -118,14 +123,15 @@ set softtabstop=4               "make tabs 4 spaces
 set splitbelow                  "open new windows below
 set splitright                  "open new windows to the right
 set tabstop=4                   "make tabs 4 spaces
+set t_Co=256                    "force 256 colors
 set virtualedit=onemore         "let cursor go past end of line
 set winminheight=0              "minimum window height zero lines
 set shellslash                  "fix Cygwin and Syntastic
 
 syntax on                       "highlighting is a necessity
 
-":colors molokai "Color scheme COMMENT OUT FOR COMPATIBILITY
-:colors elflord "UNCOMMENT FOR COMPATIBILITY
+:colors molokai "Color scheme COMMENT OUT FOR COMPATIBILITY
+":colors elflord "UNCOMMENT FOR COMPATIBILITY
 
 command! C let @/ = "" "Clear last search pattern with :C
 

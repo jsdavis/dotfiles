@@ -21,10 +21,10 @@ Plug 'tomasr/molokai'
 Plug 'bling/vim-airline'
 
 "NERDTree
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeTabsToggle' }
 
 "NERDTree Tabs
-Plug 'jistr/vim-nerdtree-tabs', { 'on': 'NERDTreeToggle' }
+Plug 'jistr/vim-nerdtree-tabs', { 'on': 'NERDTreeTabsToggle' }
 
 "Syntastic
 Plug 'scrooloose/syntastic'
@@ -43,7 +43,10 @@ Plug 'vim-scripts/HTML-AutoCloseTag', { 'for': ['html', 'javascript'] }
 
 "Better JS Support
 Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'jsx'] }
-Plug 'pangloss/vim-jsx', { 'for': 'jsx' }
+Plug 'mxw/vim-jsx', { 'for': 'jsx' }
+
+"Auto completion
+Plug 'ervandew/supertab'
 
 call plug#end()
 
@@ -88,6 +91,9 @@ augroup END
 
 "NERDCommenter Settings
 let g:NERDSpaceDelims=1
+
+"SuperTab Settings
+let g:SuperTabContextDefaultCompletionType = '<c-n>'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 

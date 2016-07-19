@@ -42,7 +42,7 @@ for file in files:
         pass
 
     os.symlink(file, homefile)
-        
+
 # We're done!
 print "Symlinks to the dotfiles have been created."
 

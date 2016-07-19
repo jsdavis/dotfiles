@@ -7,7 +7,8 @@ let mapleader = ","
 
 " Auto install vim-plug if it's not installed already
 if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/dotfiles/.vim/autoload/plug.vim --create-dirs
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
@@ -18,7 +19,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'tomasr/molokai'
 
 "Airline
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 "NERDTree
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeTabsToggle' }
@@ -47,6 +49,12 @@ Plug 'mxw/vim-jsx', { 'for': 'jsx' }
 
 "Auto completion
 Plug 'ervandew/supertab'
+
+"Search previews
+Plug 'osyo-manga/vim-over'
+
+"Indentation guides
+Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
@@ -82,6 +90,8 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+let g:syntastic_javascript_checkers = ['eslint']
+
 "Better whitespace settings
 augroup togglestrip
   au!
@@ -94,6 +104,9 @@ let g:NERDSpaceDelims=1
 
 "SuperTab Settings
 let g:SuperTabContextDefaultCompletionType = '<c-n>'
+
+"vim-over Settings
+cabbrev s OverCommandLine
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 

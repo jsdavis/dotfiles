@@ -2,7 +2,11 @@
 
 # I want my bash stuff when root
 if [[ $SUDO_USER ]]; then
-    export DOTFILES=/home/$SUDO_USER/dotfiles
+    if [[ $OSTYPE == darwin* ]]; then
+        export DOTFILES=/Users/$SUDO_USER/dotfiles
+    else
+        export DOTFILES=/home/$SUDO_USER/dotfiles
+    fi
 else
     export DOTFILES=~/dotfiles
 fi

@@ -10,7 +10,7 @@ echo
 echo "Updating dotfiles from remote host..."
 
 dir=$(pwd)
-scp -r "$1":~/dotfiles/* "$dir" > /dev/null
+rsync -aruv "$1":~/dotfiles/ "$dir" > /dev/null
 
 echo
 echo "Done."

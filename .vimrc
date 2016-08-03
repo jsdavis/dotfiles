@@ -14,8 +14,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-"Molokai color theme
-Plug 'tomasr/molokai'
+"Monokai color theme
+Plug 'crusoexia/vim-monokai'
 
 "Airline
 Plug 'vim-airline/vim-airline'
@@ -43,7 +43,9 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'vim-scripts/HTML-AutoCloseTag', { 'for': ['html', 'javascript'] }
 
 "Better JS Support
-Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'jsx'] }
+Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'jsx', 'html'] }
+Plug 'crusoexia/vim-javascript-lib', { 'for': ['javascript', 'jsx', 'html'] }
+Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript', 'jsx', 'html']}
 Plug 'mxw/vim-jsx', { 'for': 'jsx' }
 
 "Auto completion
@@ -111,6 +113,7 @@ cabbrev s OverCommandLine
 
 "Options in alphabetical order
 set autoindent                  "keep indents when making new lines
+set background=dark             "fix for indent guides
 set backspace=indent,eol,start  "fix backspace
 set bs=2                        "more fix backspace
 set expandtab                   "expand tabs into spaces
@@ -148,8 +151,8 @@ set winminheight=0              "minimum window height zero lines
 set shellslash                  "fix Cygwin and Syntastic
 
 
-:colors molokai "Color scheme COMMENT OUT FOR COMPATIBILITY
-":colors elflord "UNCOMMENT FOR COMPATIBILITY
+:colorscheme monokai "Color scheme COMMENT OUT FOR COMPATIBILITY
+":colorscheme elflord "UNCOMMENT FOR COMPATIBILITY
 
 command! C let @/ = "" "Clear last search pattern with :C
 
@@ -223,7 +226,7 @@ cabbrev e edit
 "Go ALL the way to the end
 vnoremap G G$
 
-"Wrap text to 80 lines and highlight any lines that go over 80 chars
+"Wrap text to 90 lines
 setlocal textwidth=90
 if exists('&breakindent')
  set breakindent   "Indent wrapped lines up to the same level

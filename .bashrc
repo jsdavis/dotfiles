@@ -32,14 +32,14 @@ fi
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
-START='\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")'
-END='-> \[$txtrst\]'
+#MIDDLE='\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")'
+#END='-> \[$txtrst\]'
 
 # Show host in ssh sessions
 if [ -n "$SSH_TTY" ]; then
-    export PS1="\[$bldcyn\]\$\h$START\[$bldcyn\]$END"
+    export PS1='\[$bldcyn\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldcyn\]-> \[$txtrst\]'
 else
-    export PS1="\[$bldpur\]\$$START\[$bldpur\]$END"
+    export PS1='\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]'
 fi
 
 ###############################################################################
@@ -62,8 +62,8 @@ shopt -s checkwinsize
 # Alias things
 
 # Easy source
-alias loadrc="source $DOTFILES/.bashrc"
-alias loadpr="source $DOTFILES/.bash_profile"
+alias src="source $DOTFILES/.bashrc"
+alias spr="source $DOTFILES/.bash_profile"
 
 #Easy edit
 alias vrc="vim $DOTFILES/.bashrc"
@@ -108,6 +108,7 @@ alias gd='git diff'
 alias gpsh='git push'
 alias gpl='git pull'
 alias gf='git fetch'
+alias gm='git merge'
 
 # Why type more than one letter?
 alias v='vim'

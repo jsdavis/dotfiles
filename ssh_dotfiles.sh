@@ -10,11 +10,13 @@ echo
 echo "Copying dotfiles..."
 
 dir=$(pwd)
-scp -r "$dir" "$1":~/ > /dev/null
+rsync -aru --exclude='.git/' "$dir" "$1":~/ > /dev/null
 
-echo
-echo "Removing .git files..."
-ssh "$1" "rm -rf ~/dotfiles/.git"
+if [ -f ~/.iterm2_shell_integration.bash ]; then
+    echo
+    echo "Copying iterm files..."
+    rsync -aru ~/.iterm* "$1":~/ > /dev/null
+fi
 
 echo
 echo "Done."

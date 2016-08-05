@@ -18,6 +18,8 @@ if [ -f ~/.iterm2_shell_integration.bash ]; then
     rsync -aru ~/.iterm* "$1":~/ > /dev/null
 fi
 
+ssh "$1" "~/dotfiles/setup.py"
+
 echo
 echo "Done."
 echo

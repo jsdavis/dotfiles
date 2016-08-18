@@ -12,13 +12,7 @@ echo "Copying dotfiles..."
 dir=$(pwd)
 rsync -aru --exclude='.git/' "$dir" "$1":~/ > /dev/null
 
-if [ -f ~/.iterm2_shell_integration.bash ]; then
-    echo
-    echo "Copying iterm files..."
-    rsync -aru ~/.iterm* "$1":~/ > /dev/null
-fi
-
-ssh "$1" "~/dotfiles/setup.py"
+ssh -t "$1" "sudo ~/dotfiles/setup.py"
 
 echo
 echo "Done."

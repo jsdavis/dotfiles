@@ -8,6 +8,6 @@ fi
 source "$BASH_HOME/.bashrc"
 
 # If we have iTerm2, activate shell integration
-if [ -f ~/.iterm2_shell_integration.bash ]; then
+if [ -f "$BASH_HOME/.iterm2_shell_integration.bash" ]; then
         source ~/.iterm2_shell_integration.bash
 fi

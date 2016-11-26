@@ -12,7 +12,7 @@ echo "Copying dotfiles..."
 dir=$(pwd)
 rsync -aru --exclude='.git/' "$dir" "$1":~/ > /dev/null
 
-ssh -t "$1" "sudo ~/dotfiles/setup.py"
+ssh -t "$1" "~/dotfiles/setup.py"
 
 echo
 echo "Done."

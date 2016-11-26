@@ -1,3 +1,8 @@
+# .bash_profile.local if applicable
+if [ -f ~/.bash_profile.local ]; then
+    source ~/.bash_profile.local
+fi
+
 # I want my bash stuff when in root
 if [[ $SUDO_USER ]]; then
     export BASH_HOME=/home/$SUDO_USER

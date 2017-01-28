@@ -14,8 +14,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-"Monokai color theme
-Plug 'crusoexia/vim-monokai'
+"Solarized color theme
+Plug 'altercation/vim-colors-solarized'
 
 "Airline
 Plug 'vim-airline/vim-airline'
@@ -151,7 +151,7 @@ set winminheight=0              "minimum window height zero lines
 set shellslash                  "fix Cygwin and Syntastic
 
 
-:colorscheme monokai "Color scheme COMMENT OUT FOR COMPATIBILITY
+:colorscheme solarized "Color scheme COMMENT OUT FOR COMPATIBILITY
 ":colorscheme elflord "UNCOMMENT FOR COMPATIBILITY
 
 command! C let @/ = "" "Clear last search pattern with :C

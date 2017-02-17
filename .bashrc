@@ -73,7 +73,7 @@ alias spr="source $DOTFILES/.bash_profile"
 alias vrc="vim $DOTFILES/.bashrc"
 alias vpr="vim $DOTFILES/.bash_profile"
 alias vimrc="vim $DOTFILES/.vimrc"
-alias vlrc="vim $DOTFILES/.bashrc.local"
+alias vlrc="vim ~/.bashrc.local"
 
 # Try not to clobber things
 alias rm='rm -i'

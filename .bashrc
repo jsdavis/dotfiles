@@ -127,3 +127,6 @@ alias fuck='sudo $(history -p !!)'
 alias .='cd ..'
 alias ..='cd ../..'
 alias ...='cd ../../..'
+
+# Fast update script
+alias apt-update='sudo $DOTFILES/scripts/apt-update.sh'

@@ -46,6 +46,8 @@ else
     export PS1='\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]'
 fi
 
+PROMPT_DIRTRIM=3
+
 ###############################################################################
 # History things
 

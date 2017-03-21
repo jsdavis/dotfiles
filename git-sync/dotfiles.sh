@@ -1,6 +1,6 @@
 cd ~/dotfiles
-git pull &> /dev/null
+git pull
 
-git add --all &> /dev/null
-git commit -am "Automatic commit" &> /dev/null
-git push &> /dev/null
+git add --all
+git commit -am "Automatic commit"
+git push

@@ -7,6 +7,6 @@ For WSL Users
 3. Set a suitable trigger (i.e. on startup or on logon)
 4. Set action to "Start a Program"
 5. Set the program/script to be "bash" (must be in your PATH)
-6. Add arguments "~/dotfiles/git-sync/pull.sh"
+6. Add arguments "~/dotfiles/git-sync/[file].sh"
 7. Start in
 "C:\Windows\Users\$WINDOWS_USER$\AppData\Local\lxss\home\$BASH_USER$\dotfiles\git-sync"

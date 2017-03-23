@@ -3,5 +3,5 @@
 source ~/.bashrc.local
 
 cd ~/dotfiles/git-sync
-./sublime.sh
-./dotfiles.sh
+./sublime.sh &> /dev/null
+./dotfiles.sh &> /dev/null

@@ -15,36 +15,26 @@ fi
 source "$DOTFILES/git/git-completion.bash"
 source "$DOTFILES/git/git-prompt.sh"
 
-# Nice color variables
-source "$DOTFILES/colors.sh"
-
 # .bashrc.local if applicable
 if [ -f ~/.bashrc.local ]; then
     source ~/.bashrc.local
 fi
 
 # Set the prompt to '$|#[Working Dir](git branch *|+|%)-> '
-# \[$bldpur\]           --> Bold Purple
+# \[\e[1;35m\]          --> Purple
 # \$                    --> $ for user, # for root
-# \[$bldgrn\]           --> Bold Green
+# \[\e[0;34m\]          --> Blue
 # \w                    --> Working directory
-# \[$bldpur\]           --> Bold Purple
-# \[$bldblu\]           --> Bold Blue
+# \[\e[0;32m\]          --> Green
 # $(__git_ps1 "(%s)")   --> Display git branch as (branch)
+# \[\e[1;35m\]          --> Purple
 # ->                    --> "-> "
-# \[$txtrst\]           --> Default color
+# \[\e[0m\]             --> Default color
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
-#MIDDLE='\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")'
-#END='-> \[$txtrst\]'
 
-# Show host in ssh sessions
-if [ -n "$SSH_TTY" ]; then
-    export PS1='\[$bldcyn\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldcyn\]-> \[$txtrst\]'
-else
-    export PS1='\[$bldpur\]\$\[$bldgrn\][\w]\[$bldblu\]$(__git_ps1 "(%s)")\[$bldpur\]-> \[$txtrst\]'
-fi
+export PS1='\[\e[1;35m\]\$\[\e[0;34m\][\w]\[\e[0;32m\]$(__git_ps1 "(%s)")\[\e[1;35m\]-> \[\e[0m\]'
 
 PROMPT_DIRTRIM=3
 

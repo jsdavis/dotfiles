@@ -10,7 +10,7 @@ import platform
 print "\nSetting up dotfiles...\n"
 
 # Get absolute path of current directory
-dir = os.path.dirname(os.path.abspath(__file__))
+curr_dir = os.path.dirname(os.path.abspath(__file__))
 
 # For Windows filesystem compatability
 slash = "\\" if platform.system() == "win32" else "/"
@@ -23,7 +23,7 @@ if home == '/root/':
     home = '/home/' + os.environ['SUDO_USER'] + '/'
 
 # Get list of dotfiles in current directory
-files = glob.glob(dir + slash + ".*")
+files = glob.glob(curr_dir + slash + ".*")
 for file in files:
     # Remove directories from list, except .iterm2/
     if os.path.isdir(file) and file.split(slash)[-1] != '.iterm2':

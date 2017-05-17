@@ -61,8 +61,8 @@ call plug#end()
 
 "Airline settings
 set laststatus=2
-"let g:airline_powerline_fonts=1 "COMMENT OUT FOR COMPATIBILITY
-let g:airline_powerline_fonts=0 "UNCOMMENT FOR COMPATIBILITY
+let g:airline_powerline_fonts=1 "COMMENT OUT FOR COMPATIBILITY
+"let g:airline_powerline_fonts=0 "UNCOMMENT FOR COMPATIBILITY
 let g:airline_detect_paste=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#show_buffers=0
@@ -145,6 +145,7 @@ set softtabstop=4               "make tabs 4 spaces
 set splitbelow                  "open new windows below
 set splitright                  "open new windows to the right
 set tabstop=4                   "make tabs 4 spaces
+set term=xterm                  "tell vim we're using xterm. ConEmu scroll fix
 set t_Co=256                    "force 256 colors
 set virtualedit=onemore         "let cursor go past end of line
 set winminheight=0              "minimum window height zero lines
@@ -160,6 +161,12 @@ command! C let @/ = "" "Clear last search pattern with :C
 if has('mouse')
   set mouse=a
   set mousehide "hide when typing
+
+  " ConEmu scroll fix
+  inoremap <Esc>[62~ <C-X><C-E>
+  inoremap <Esc>[63~ <C-X><C-Y>
+  nnoremap <Esc>[62~ <C-E>
+  nnoremap <Esc>[63~ <C-Y>
 endif
 
 

@@ -1,16 +1,20 @@
-###############################################################################
-# Alias things
+# Easy editing and sourcing of shell configs
+if [ ! -z $RC ]; then
+    alias src="source ~/$RC"
+    alias vrc="vim ~/$RC"
+    alias vlrc="vim ~/$RC.local"
+fi
 
-# Easy source
-#alias src="source $DOTFILES/$RC"
-#alias spr="source $DOTFILES/$PROFILE"
+if [ ! -z $PROFILE ]; then
+    alias spr="source ~/$PROFILE"
+    alias vpr="vim ~/$PROFILE"
+    alias vlpr="vim ~/$PROFILE.local"
+fi
 
-#Easy edit
-#alias vrc="vim $DOTFILES/.bashrc"
-#alias vpr="vim $DOTFILES/.bash_profile"
-#alias vimrc="vim $DOTFILES/.vimrc"
-#alias vlrc="vim ~/.bashrc.local"
-#alias vlpr="vim ~/.bash_profile.local"
+
+# Easy edit aliases and vimrc
+alias va="vim ~/.aliases"
+alias vimrc="vim ~/.vimrc"
 
 # Try not to clobber things
 alias rm='rm -i'
@@ -25,9 +29,8 @@ case $OSTYPE in
         LS_OPTS="-G"
         ;;
 esac
-export LS_OPTS="-F $LS_OPTS"
 
-alias ls='ls $LS_OPTS'
+alias ls='ls -F $LS_OPTS'
 alias dir='dir $LS_OPTS'
 alias vdir='vdir $LS_OPTS'
 alias grep='grep $LS_OPTS'
@@ -57,7 +60,7 @@ alias v='vim'
 alias c='clear'
 
 # For when we forget sudo
-#alias fuck='sudo $(history -p !!)'
+alias fuck='sudo $(history -p !!)'
 
 # For moving easily
 alias .='cd ..'
@@ -65,4 +68,4 @@ alias ..='cd ../..'
 alias ...='cd ../../..'
 
 # Fast update script
-#alias apt-update='sudo $DOTFILES/scripts/apt-update.sh'
+alias apt-update='sudo $DOTFILES/scripts/apt-update.sh'

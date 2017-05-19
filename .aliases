@@ -60,7 +60,8 @@ alias v='vim'
 alias c='clear'
 
 # For when we forget sudo
-alias fuck='sudo $(history -p !!)'
+# alias fuck='sudo $(history -p !!)'
+alias fuck='sudo $(fc -ln -1)'
 
 # For moving easily
 alias .='cd ..'

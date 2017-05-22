@@ -70,3 +70,5 @@ alias ...='cd ../../..'
 
 # Fast update script
 alias apt-update='sudo $DOTFILES/scripts/apt-update.sh'
+
+alias subl='subl.exe'

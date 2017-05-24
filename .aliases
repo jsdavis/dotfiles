@@ -72,3 +72,4 @@ alias ...='cd ../../..'
 alias apt-update='sudo $DOTFILES/scripts/apt-update.sh'
 
 alias subl='subl.exe'
+alias chrome='/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe'

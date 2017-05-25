@@ -4,13 +4,13 @@ which apt &> /dev/null
 if [ $? -eq 0 ]
 then
     echo -e "UPDATE\n\n"
-    apt-get update
+    apt update
 
     echo -e "\n\nUPGRADE\n\n"
-    apt-get upgrade -y
+    apt upgrade -y
 
     echo -e "\n\nAUTOREMOVE\n\n"
-    apt-get autoremove -y
+    apt autoremove -y
 else
     echo "NOPE"
 fi

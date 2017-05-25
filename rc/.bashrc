@@ -44,7 +44,7 @@ else
     PROMPT_DIRTRIM=3
 
     # Import custom ls colors if they exist
-    [ -e ~/.dircolors ] && eval $(dircolors -b ~/.dircolors) || eval $(dircolors -b)
+    [ -e $DOTFILES/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lscolors.sh) || eval $(dircolors -b)
 
     ###############################################################################
     # History things

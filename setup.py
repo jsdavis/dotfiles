@@ -23,11 +23,11 @@ if home == '/root/':
     home = '/home/' + os.environ['SUDO_USER'] + '/'
 
 # Get list of dotfiles in current directory
-files = glob.glob(curr_dir + slash + ".*")
-for file in files:
+files = glob.glob(curr_dir + slash + "rc" + slash + ".*")
+#for file in files:
     # Remove directories from list, except .iterm2/
-    if os.path.isdir(file) and file.split(slash)[-1] != '.iterm2':
-        files.remove(file)
+    # if os.path.isdir(file) and file.split(slash)[-1] != '.iterm2':
+        # files.remove(file)
 
 # Create symlinks to found dotfiles as necessary
 for file in files:

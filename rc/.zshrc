@@ -1,7 +1,9 @@
 export DOTFILES=~/dotfiles
 export RC=.zshrc
 
-source ~/.bashrc.local
+if [ -f ~/.zshrc.local ]; then
+    source ~/.zshrc.local
+fi
 
 # Import custom ls colors if they exist
 [ -e $DOTFILES/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lscolors.sh) || eval $(dircolors -b)

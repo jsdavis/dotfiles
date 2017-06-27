@@ -5,7 +5,6 @@ import glob
 import errno
 import shutil
 import filecmp
-import platform
 
 print "\nSetting up dotfiles...\n"
 
@@ -13,68 +12,49 @@ print "\nSetting up dotfiles...\n"
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
 # For Windows filesystem compatability
-slash = "\\" if platform.system() == "win32" else "/"
-home = os.path.expanduser("~") + slash
+home = os.path.expanduser("~")
 
-# Are we running in sudo (Linux only)
-sudo = False
-if home == '/root/':
-    sudo = True
-    home = '/home/' + os.environ['SUDO_USER'] + '/'
-
-# Get list of dotfiles in current directory
-files = glob.glob(curr_dir + slash + "rc" + slash + ".*")
-#for file in files:
-    # Remove directories from list, except .iterm2/
-    # if os.path.isdir(file) and file.split(slash)[-1] != '.iterm2':
-        # files.remove(file)
+# Get list of dotfiles in rc directory
+files = glob.glob(os.path.join(curr_dir,"rc",".*"))
 
 # Create symlinks to found dotfiles as necessary
-for file in files:
-    filename = file.split(slash)[-1]
-    homefile = home + filename
+for dotfile in files:
+    filename = os.path.basename(dotfile)
+    homeLink = os.path.join(home,filename)
     print "\n{0}...".format(filename)
 
     # Don't clobber dotfiles that exist already
     try:
         # Don't backup dotfiles that are the same
-        if not filecmp.cmp(homefile, file, False):
-            os.rename(homefile, homefile + ".bak")
+        if not filecmp.cmp(homeLink, dotfile, False):
+            os.rename(homeLink, homeLink + ".bak")
             print "{0} exists. Moved to {0}.bak".format(filename)
 
         # Delete original if same. Not efficient, but cleaner logic
         else:
-            os.remove(homefile)
+            print "{0} symlink already exists. No change will occur.".format(filename)
+            os.remove(homeLink)
 
     except OSError as err:
         if errno.errorcode[err.errno] == 'EISDIR':
-            if os.path.islink(homefile):
-                os.unlink(homefile)
+            if os.path.islink(homeLink):
+                os.unlink(homeLink)
             else:
-                shutil.rmtree(homefile)
+                shutil.rmtree(homeLink)
 
-    os.symlink(file, homefile)
-
-    # Set up root environment too
-    if sudo:
-        rootfile = '/root/' + filename
-
-        # Don't clobber things that exist
-        try:
-            # Don't backup things that are the same
-            if not filecmp.cmp(rootfile, homefile, False):
-                os.rename(rootfile, rootfile + ".bak")
-                print "{0} exists. Moved to {0}.bak".format(rootfile)
-
-            # Delete original if same. Not efficient, but cleaner logic
-            else:
-                os.remove(rootfile)
-
-        except OSError:
-            pass
-
-        # Just copy the newly created symlinks into the root directory
-        os.symlink(file, rootfile)
+    os.symlink(dotfile, homeLink)
 
 # We're done!
-print "Symlinks to the dotfiles have been created."
+print "Dotfile setup complete."
+
+
+# If we're on WSL, move those powerline fonts to the Windows filesystem
+if os.path.isdir('/mnt/c/Windows'):
+    print "\nWSL detected. Moving fonts..."
+    try:
+        shutil.copytree(os.path.join(curr_dir, 'font'), '/mnt/c/font')
+        print "Fonts can be installed from /mnt/c/font directory"
+
+    except OSError as err:
+        if errno.errorcode[err.errno] == 'EEXIST':
+            print "/mnt/c/font directory already exists. Nothing was copied"

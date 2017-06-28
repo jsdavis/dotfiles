@@ -28,11 +28,11 @@ for dotfile in files:
         # Don't backup dotfiles that are the same
         if not filecmp.cmp(homeLink, dotfile, False):
             os.rename(homeLink, homeLink + ".bak")
-            print "{0} exists. Moved to {0}.bak".format(filename)
+            print "\t{0} exists. Moved to {0}.bak".format(filename)
 
         # Delete original if same. Not efficient, but cleaner logic
         else:
-            print "{0} symlink already exists. No change will occur.".format(filename)
+            print "\t{0} symlink already exists. No change will occur.".format(filename)
             os.remove(homeLink)
 
     except OSError as err:
@@ -49,12 +49,32 @@ print "Dotfile setup complete."
 
 
 # If we're on WSL, move those powerline fonts to the Windows filesystem
+s = raw_input('\nInstall powerline fonts? (y) ')
+if s.lower() == 'n' or s.lower() == 'no':
+    print "No fonts will be installed. Setup is complete"
+    quit()
+
 if os.path.isdir('/mnt/c/Windows'):
-    print "\nWSL detected. Moving fonts..."
+    print "\nWSL detected."
+    win_usr = raw_input("\tPlease specify your Windows username to install fonts: ")
+    win_usr = os.path.join('/mnt/c/Users/', win_usr, 'font')
     try:
-        shutil.copytree(os.path.join(curr_dir, 'font'), '/mnt/c/font')
-        print "Fonts can be installed from /mnt/c/font directory"
+        shutil.copytree(os.path.join(curr_dir, 'scripts', 'font'), win_usr)
+        print "\tFonts copied to {0} directory".format(win_usr)
+
+        os.chdir(win_usr)
+        result = os.system('powershell.exe -executionpolicy bypass -command ".\\\Add-Font.ps1 fonts *> \\$null"')
+        if result == 0:
+            print "\tPowerline fonts have been installed"
+
+            print "\tCleaning up..."
+            os.chdir(curr_dir)
+            shutil.rmtree(win_usr)
+        else:
+            print "\t Installing fonts failed. Opening the {0} directory for manual installation".format(win_usr)
+            os.system('explorer.exe fonts')
+            os.chdir(curr_dir)
 
     except OSError as err:
         if errno.errorcode[err.errno] == 'EEXIST':
-            print "/mnt/c/font directory already exists. Nothing was copied"
+            print "{0} directory already exists. Nothing was copied".format(win_usr)

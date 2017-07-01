@@ -21,7 +21,6 @@ files = glob.glob(os.path.join(curr_dir,"rc",".*"))
 for dotfile in files:
     filename = os.path.basename(dotfile)
     homeLink = os.path.join(home,filename)
-    print "\n{0}...".format(filename)
 
     # Don't clobber dotfiles that exist already
     try:
@@ -32,7 +31,6 @@ for dotfile in files:
 
         # Delete original if same. Not efficient, but cleaner logic
         else:
-            print "\t{0} symlink already exists. No change will occur.".format(filename)
             os.remove(homeLink)
 
     except OSError as err:
@@ -56,14 +54,14 @@ if s.lower() == 'n' or s.lower() == 'no':
 
 if os.path.isdir('/mnt/c/Windows'):
     print "\nWSL detected."
-    win_usr = raw_input("\tPlease specify your Windows username to install fonts: ")
-    win_usr = os.path.join('/mnt/c/Users/', win_usr, 'font')
+    # win_usr = raw_input("\tPlease specify your Windows username to install fonts: ")
+    win_usr = os.path.join('/mnt/c', 'font')
     try:
         shutil.copytree(os.path.join(curr_dir, 'scripts', 'font'), win_usr)
         print "\tFonts copied to {0} directory".format(win_usr)
 
         os.chdir(win_usr)
-        result = os.system('powershell.exe -executionpolicy bypass -command ".\\\Add-Font.ps1 fonts *> \\$null"')
+        result = os.system('powershell.exe -command "&{ start-process powershell -ArgumentList \'-executionpolicy bypass -command \"C:\\font\\Add-Font.ps1 C:\\font\\fonts\"\' -verb RunAs}"')
         if result == 0:
             print "\tPowerline fonts have been installed"
 
@@ -78,3 +76,7 @@ if os.path.isdir('/mnt/c/Windows'):
     except OSError as err:
         if errno.errorcode[err.errno] == 'EEXIST':
             print "{0} directory already exists. Nothing was copied".format(win_usr)
+        else:
+            raise
+else:
+    print "\nThere is no support for non-WSL systems at this time."

@@ -232,9 +232,3 @@ cabbrev e edit
 
 "Go ALL the way to the end
 vnoremap G G$
-
-"Wrap text to 90 lines
-setlocal textwidth=90
-if exists('&breakindent')
- set breakindent   "Indent wrapped lines up to the same level
-endif

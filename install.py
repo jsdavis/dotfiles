@@ -71,6 +71,9 @@ def dotfiles():
     print "Dotfile setup complete."
 
 def install_fonts():
+    # Get absolute path of current directory
+    curr_dir = os.path.dirname(os.path.abspath(__file__))
+
     # This only works on WSL for now
     if system_type() == 'WSL':
         c_font = '/mnt/c/font'

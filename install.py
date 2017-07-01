@@ -121,4 +121,4 @@ if check_input(do_fonts):
 else:
     print "No fonts will be installed"
 
-print "Installation complete!"
+print "\nInstallation complete!"

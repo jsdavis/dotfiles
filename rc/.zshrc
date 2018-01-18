@@ -5,6 +5,9 @@ if [ -f ~/.zshrc.local ]; then
     source ~/.zshrc.local
 fi
 
+# added by Anaconda3 installer
+export PATH="/home/jsdavis/anaconda3/bin:$PATH"
+
 # Import custom ls colors if they exist
 [ -e $DOTFILES/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lscolors.sh) || eval $(dircolors -b)
 

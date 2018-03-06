@@ -133,7 +133,7 @@ set linespace=0                 "no space between lines
 set modeline                    "show what I'm doing
 set noerrorbells                "don't yell at me
 set nojoinspaces                "don't make whitespace on joins
-set number                      "line numbers
+set number relativenumber       "line numbers
 set ruler                       "show ruler
 set scrolloff=3                 "don't allow cursor less than 3 lines from edge
 set shiftwidth=4                "make tabs 4 spaces

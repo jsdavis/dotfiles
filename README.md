@@ -22,6 +22,5 @@ Download with
 
 Run the installation script
 `cd dotfiles`
-`./install.py`
 
-NOTE: Running install.py requires Python 2 be installed.
+`./install.py`

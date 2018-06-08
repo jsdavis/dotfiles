@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
+import __future__
 import os
 import glob
 import errno
 import shutil
 import filecmp
-from __future__ import print_function
 
 # Got this from StackOverflow and it works so don't touch it
 magic_powershell_command = 'powershell.exe -command "&{ start-process powershell -ArgumentList \'-executionpolicy bypass -command \"C:\\font\\Add-Font.ps1 C:\\font\\fonts\"\' -verb RunAs}"'
@@ -115,14 +115,14 @@ def install_fonts():
 
 
 # Do we want to install dotfiles?
-do_dotfiles = raw_input('\nInstall dotfiles? (y) ')
+do_dotfiles = input('\nInstall dotfiles? (y) ')
 if check_input(do_dotfiles):
     dotfiles()
 else:
     print("Dotfiles will not be installed.")
 
 # Do we want to install fonts?
-do_fonts = raw_input('\nInstall powerline fonts? (y) ')
+do_fonts = input('\nInstall powerline fonts? (y) ')
 if check_input(do_fonts):
     install_fonts()
 else:

@@ -1,29 +1,16 @@
-# TODO: Add DOTFILES portability
-
 # start zsh if it exists
 if [ -x "$(command -v zsh)" ]; then
     exec zsh
 else
+    export RC=.bashrc
+    export PROFILE=.bash_profile
 
-    # I want my bash stuff when root
-    if [[ $SUDO_USER ]]; then
-        if [[ $OSTYPE == darwin* ]]; then
-            export DOTFILES=/Users/$SUDO_USER/dotfiles
-        else
-            export DOTFILES=/home/$SUDO_USER/dotfiles
-        fi
-    else
-        export DOTFILES=~/dotfiles
-    fi
+    source ~/.sharedrc
 
     # Add useful git things
     source "$DOTFILES/git/git-completion.bash"
     source "$DOTFILES/git/git-prompt.sh"
 
-    # .bashrc.local if applicable
-    if [ -f ~/.bashrc.local ]; then
-        source ~/.bashrc.local
-    fi
 
     # Set the prompt to '$|#[Working Dir](git branch *|+|%)-> '
     # \[\e[1;35m\]          --> Purple
@@ -43,9 +30,6 @@ else
 
     PROMPT_DIRTRIM=3
 
-    # Import custom ls colors if they exist
-    [ -e $DOTFILES/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lscolors.sh) || eval $(dircolors -b)
-
     ###############################################################################
     # History things
 
@@ -61,9 +45,6 @@ else
 
     # check the window size after each command and update lines/cols
     shopt -s checkwinsize
-
-
-    export RC=.bashrc
-    export PROFILE=.bash_profile
-    source ~/.aliases
 fi
+
+

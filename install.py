@@ -5,6 +5,7 @@ import glob
 import errno
 import shutil
 import filecmp
+from __future__ import print_function
 
 # Got this from StackOverflow and it works so don't touch it
 magic_powershell_command = 'powershell.exe -command "&{ start-process powershell -ArgumentList \'-executionpolicy bypass -command \"C:\\font\\Add-Font.ps1 C:\\font\\fonts\"\' -verb RunAs}"'
@@ -27,11 +28,11 @@ def fonts_installed(font_dir):
     return True
 
 def manual_font_installation():
-    print "\tAn error occurred installing fonts. Opening folder for manual installation"
+    print("\tAn error occurred installing fonts. Opening folder for manual installation")
     os.system('explorer.exe fonts')
 
 def dotfiles():
-    print "\nSetting up dotfiles...\n"
+    print("\nSetting up dotfiles...\n")
 
     # Get absolute path of current directory
     curr_dir = os.path.dirname(os.path.abspath(__file__))
@@ -52,7 +53,7 @@ def dotfiles():
             # Don't backup dotfiles that are the same
             if not filecmp.cmp(homeLink, dotfile, False):
                 os.rename(homeLink, homeLink + ".bak")
-                print "\t{0} exists. Moved to {0}.bak".format(filename)
+                print("\t{0} exists. Moved to {0}.bak".format(filename))
 
             # Delete original if same. Not efficient, but cleaner logic
             else:
@@ -65,10 +66,13 @@ def dotfiles():
                 else:
                     shutil.rmtree(homeLink)
 
+        if os.path.islink(homeLink):
+            os.unlink(homeLink)
         os.symlink(dotfile, homeLink)
 
+
     # We're done!
-    print "Dotfile setup complete."
+    print("Dotfile setup complete.")
 
 def install_fonts():
     # Get absolute path of current directory
@@ -80,18 +84,18 @@ def install_fonts():
 
         # First check if fonts are already installed
         if fonts_installed(c_font):
-            print "\tFonts are already installed."
+            print("\tFonts are already installed.")
             return
 
         try:
             # Copy fonts to a folder on the Windows filesystem
             shutil.copytree(os.path.join(curr_dir, 'scripts/font'), c_font)
-            print "\tFonts copied to {0} directory".format(c_font)
+            print("\tFonts copied to {0} directory".format(c_font))
 
             os.chdir(c_font)
             if os.system(magic_powershell_command) == 0:
                 if fonts_installed(c_font):
-                    print "\tFonts successfully installed\n\tCleaning up..."
+                    print("\tFonts successfully installed\n\tCleaning up...")
                     os.chdir(curr_dir)
                     shutil.rmtree(c_font)
                 else:
@@ -103,11 +107,11 @@ def install_fonts():
 
         except OSError as err:
             if errno.errorcode[err.errno] == 'EEXIST':
-                print "{0} directory already exists. Nothing was copied".format(c_font)
+                print("{0} directory already exists. Nothing was copied".format(c_font))
             else:
                 raise
     else:
-        print "\nThere is no support for non-WSL systems at this time."
+        print("\nThere is no support for non-WSL systems at this time.")
 
 
 # Do we want to install dotfiles?
@@ -115,13 +119,13 @@ do_dotfiles = raw_input('\nInstall dotfiles? (y) ')
 if check_input(do_dotfiles):
     dotfiles()
 else:
-    print "Dotfiles will not be installed."
+    print("Dotfiles will not be installed.")
 
 # Do we want to install fonts?
 do_fonts = raw_input('\nInstall powerline fonts? (y) ')
 if check_input(do_fonts):
     install_fonts()
 else:
-    print "No fonts will be installed"
+    print("No fonts will be installed")
 
-print "\nInstallation complete!"
+print("\nInstallation complete!")

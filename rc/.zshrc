@@ -8,7 +8,7 @@ export PATH=$HOME/.local/bin:$PATH
 
 source ~/.sharedrc
 
-# Path to your oh-my-zsh installation.
+# Path to your zsh configuration.
 export ZSH=$DOTFILES/zsh
 
 # Prompt is shortened when default user is on
@@ -48,7 +48,7 @@ autoload -U compaudit compinit
 # Set ZSH_CACHE_DIR to the path where cache files should be created
 ZSH_CACHE_DIR="$ZSH/cache"
 
-# Load all of the config files in ~/oh-my-zsh that end in .zsh
+# Load all of the config files in zsh dir that end in .zsh
 for config_file ($ZSH/lib/*.zsh); do
   source $config_file
 done

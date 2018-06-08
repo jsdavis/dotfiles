@@ -1,20 +1,12 @@
 export DOTFILES=~/dotfiles
 export RC=.zshrc
 
-if [ -f ~/.zshrc.local ]; then
-    source ~/.zshrc.local
-fi
-
-
-# added by Anaconda3 installer
-export PATH="/home/jsdavis/anaconda3/bin:$PATH"
-
-# Import custom ls colors if they exist
-[ -e $DOTFILES/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lscolors.sh) || eval $(dircolors -b)
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
+
+source ~/.sharedrc
 
 # Path to your oh-my-zsh installation.
 export ZSH=$DOTFILES/zsh
@@ -116,9 +108,6 @@ source "$ZSH/zsh-theme"
 
 # User configuration
 
-# Preferred editor for local and remote sessions
-export EDITOR='vim'
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -128,3 +117,4 @@ export EDITOR='vim'
 # Set personal aliases, overriding any made by plugins
 # For a full list of active aliases, run `alias`.
 source ~/.aliases
+

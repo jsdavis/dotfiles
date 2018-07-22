@@ -6,7 +6,9 @@ export RC=.zshrc
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 
-source ~/.sharedrc
+if [ -f ~/.sharedrc ]; then
+  source ~/.sharedrc
+fi
 
 # Path to your zsh configuration.
 export ZSH=$DOTFILES/zsh

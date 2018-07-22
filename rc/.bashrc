@@ -5,7 +5,9 @@ else
     export RC=.bashrc
     export PROFILE=.bash_profile
 
-    source ~/.sharedrc
+    if [ -f ~/.sharedrc ]; then
+        source ~/.sharedrc
+    fi
 
     # Add useful git things
     source "$DOTFILES/git/git-completion.bash"

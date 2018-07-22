@@ -71,6 +71,9 @@ alias ...='cd ../../..'
 # Fast update script
 alias apt-update='sudo $DOTFILES/scripts/apt-update.sh'
 
-alias subl='subl.exe'
-alias chrome='/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe'
-alias open='explorer.exe'
+# These aliases are only for WSL systems
+if [ -d '/mnt/c/Windows' ]; then
+    alias subl='subl.exe'
+    alias chrome='/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe'
+    alias open='explorer.exe'
+fi

@@ -11,7 +11,8 @@ import filecmp
 magic_powershell_command = 'powershell.exe -command "&{ start-process powershell -ArgumentList \'-executionpolicy bypass -command \"C:\\font\\Add-Font.ps1 C:\\font\\fonts\"\' -verb RunAs}"'
 
 def check_input(raw):
-    return not (raw.lower() == 'n' or raw.lower() == 'no')
+    ans = input(raw).lower()
+    return not (ans == 'n' or ans == 'no')
 
 def system_type():
     if os.path.isdir('/mnt/c/Windows'):
@@ -65,6 +66,8 @@ def dotfiles():
                     os.unlink(homeLink)
                 else:
                     shutil.rmtree(homeLink)
+            else:
+                raise
 
         if os.path.islink(homeLink):
             os.unlink(homeLink)
@@ -114,18 +117,20 @@ def install_fonts():
         print("\nThere is no support for non-WSL systems at this time.")
 
 
-# Do we want to install dotfiles?
-do_dotfiles = input('\nInstall dotfiles? (y) ')
-if check_input(do_dotfiles):
-    dotfiles()
-else:
-    print("Dotfiles will not be installed.")
+def main():
+    # Do we want to install dotfiles?
+    if check_input('\nInstall dotfiles? (y) '):
+        dotfiles()
+    else:
+        print("Dotfiles will not be installed.")
 
-# Do we want to install fonts?
-do_fonts = input('\nInstall powerline fonts? (y) ')
-if check_input(do_fonts):
-    install_fonts()
-else:
-    print("No fonts will be installed")
+    # Do we want to install fonts?
+    if check_input('\nInstall powerline fonts? (y) '):
+        install_fonts()
+    else:
+        print("No fonts will be installed")
 
-print("\nInstallation complete!")
+    print("\nInstallation complete!")
+
+if __name__ == '__main__':
+    main()

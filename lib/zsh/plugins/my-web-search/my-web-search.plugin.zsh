@@ -1,5 +1,7 @@
 # web_search from terminal
-alias chrome='/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe'
+if [ -d "/mnt/c/Windows" ]; then
+    alias chrome='/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe'
+fi
 
 function web_search() {
   emulate -L zsh

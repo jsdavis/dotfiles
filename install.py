@@ -11,7 +11,8 @@ import filecmp
 magic_powershell_command = 'powershell.exe -command "&{ start-process powershell -ArgumentList \'-executionpolicy bypass -command \"C:\\font\\Add-Font.ps1 C:\\font\\fonts\"\' -verb RunAs}"'
 
 def check_input(raw):
-    ans = input(raw).lower()
+    ans = raw_input(raw)
+    ans = ans.lower()
     return not (ans == 'n' or ans == 'no')
 
 def system_type():
@@ -66,8 +67,6 @@ def dotfiles():
                     os.unlink(homeLink)
                 else:
                     shutil.rmtree(homeLink)
-            else:
-                raise
 
         if os.path.islink(homeLink):
             os.unlink(homeLink)

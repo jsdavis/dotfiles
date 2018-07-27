@@ -3,18 +3,30 @@ if [ ! -z $RC ]; then
     alias src="source ~/$RC"
     alias vrc="vim ~/$RC"
     alias vlrc="vim ~/$RC.local"
+    if [ -x "$(command -v subl)" ]; then
+        alias subrc="subl ~/$RC"
+        alias sublrc="subl ~/$RC.local"
+    fi
 fi
 
 if [ ! -z $PROFILE ]; then
     alias spr="source ~/$PROFILE"
     alias vpr="vim ~/$PROFILE"
     alias vlpr="vim ~/$PROFILE.local"
+    if [ -x "$(command -v subl)" ]; then
+        alias subpr="subl ~/$PROFILE"
+        alias sublpr="subl ~/$PROFILE.local"
+    fi
 fi
-
 
 # Easy edit aliases and vimrc
 alias va="vim ~/.aliases"
 alias vimrc="vim ~/.vimrc"
+
+if [ -x "$(command -v subl)" ]; then
+    alias suba="subl ~/.aliases"
+    alias subvim="subl ~/.vimrc"
+fi
 
 # Try not to clobber things
 alias rm='rm -i'
@@ -69,7 +81,7 @@ alias ..='cd ../..'
 alias ...='cd ../../..'
 
 # Fast update script
-alias apt-update='sudo $DOTFILES/scripts/apt-update.sh'
+alias apt-update='sudo $DOTFILES/bin/apt-update.sh'
 
 # These aliases are only for WSL systems
 if [ -d '/mnt/c/Windows' ]; then

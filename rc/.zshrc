@@ -6,15 +6,15 @@ export RC=.zshrc
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 
+# Prompt is shortened when default user is on
+DEFAULT_USER=jsdavis
+
 if [ -f ~/.sharedrc ]; then
   source ~/.sharedrc
 fi
 
 # Path to your zsh configuration.
-export ZSH=$DOTFILES/zsh
-
-# Prompt is shortened when default user is on
-DEFAULT_USER=jsdavis
+export ZSH=$DOTFILES/lib/zsh
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"

@@ -10,7 +10,7 @@ fi
 
 # Import custom ls colors if they exist
 if [ -x "$(command -v dircolors)" ]; then
-    [ -e $DOTFILES/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lscolors.sh) || eval $(dircolors -b)
+    [ -e $DOTFILES/lib/colors/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lib/colors/lscolors.sh) || eval $(dircolors -b)
 fi
 
 # Preferred editor for local and remote sessions

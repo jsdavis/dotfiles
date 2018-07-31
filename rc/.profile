@@ -1,6 +1,5 @@
 # $PROFILE should be initialized by the calling shell
 # $PROF_SHELL should be initialized by the calling shell
-echo ".profile loading"
 
 # $PROFILE.local if applicable
 if [ -f ~/"$PROFILE.local" ]; then

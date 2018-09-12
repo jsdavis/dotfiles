@@ -44,4 +44,4 @@ HISTFILESIZE=2000
 # check the window size after each command and update lines/cols
 shopt -s checkwinsize
 
-
+source ~/.aliases

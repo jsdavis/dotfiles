@@ -22,6 +22,9 @@ export ZSH=$DOTFILES/lib/zsh
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
+# Use agnoster virtualenv, not default
+VIRTUAL_ENV_DISABLE_PROMPT="true"
+
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.

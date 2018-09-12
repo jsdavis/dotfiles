@@ -1,4 +1,4 @@
 .*.swp
-zsh/cache/*
+lib/zsh/cache/*
 .DS_Store
 .iterm2/

@@ -42,6 +42,7 @@ case $OSTYPE in
         ;;
 esac
 
+# Colors
 alias ls='ls -F $LS_OPTS'
 alias dir='dir $LS_OPTS'
 alias vdir='vdir $LS_OPTS'
@@ -81,10 +82,11 @@ alias c='clear'
 # alias fuck='sudo $(history -p !!)'
 alias fuck='sudo $(fc -ln -1)'
 
-# For moving easily
+# Directory stuff
 alias .='cd ..'
 alias ..='cd ../..'
 alias ...='cd ../../..'
+alias md='mkdir -p'
 
 # Fast update script
 alias apt-update='sudo $DOTFILES/bin/apt-update.sh'

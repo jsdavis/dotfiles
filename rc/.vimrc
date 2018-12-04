@@ -59,6 +59,9 @@ Plug 'Yggdroot/indentLine'
 
 call plug#end()
 
+"Solarized settings
+let g:solarized_termtrans=1
+
 "Airline settings
 set laststatus=2
 let g:airline_powerline_fonts=1 "COMMENT OUT FOR COMPATIBILITY
@@ -67,7 +70,7 @@ let g:airline_detect_paste=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#show_buffers=0
 let g:airline#extensions#tabline#tab_min_count=2
-let g:airline_theme = 'molokai'
+let g:airline_theme = 'solarized'
 
 set encoding=utf-8
 "set guifont=PowerlineConsolas:h10 "COMMENT OUT FOR COMPATIBILITY
@@ -145,7 +148,7 @@ set softtabstop=4               "make tabs 4 spaces
 set splitbelow                  "open new windows below
 set splitright                  "open new windows to the right
 set tabstop=4                   "make tabs 4 spaces
-set term=xterm                  "tell vim we're using xterm. ConEmu scroll fix
+set term=xterm-256color         "tell vim we're using xterm. ConEmu scroll fix
 set t_Co=256                    "force 256 colors
 set virtualedit=onemore         "let cursor go past end of line
 set winminheight=0              "minimum window height zero lines

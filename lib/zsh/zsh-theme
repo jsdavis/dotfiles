@@ -212,9 +212,18 @@ prompt_status() {
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }
 
+function osx_notify {
+  if [[ "$OSTYPE" = darwin* ]]; then
+    local cmd
+    cmd=$(fc -ln -1)
+    $DOTFILES/bin/osx_notify "$cmd" "$RETVAL" &
+  fi
+}
+
 ## Main prompt
 build_prompt() {
   RETVAL=$?
+  osx_notify
   prompt_status
   prompt_virtualenv
   prompt_context

@@ -66,6 +66,12 @@ alias gpsh='git push'
 alias gpl='git pull'
 alias gf='git fetch'
 alias gm='git merge'
+alias gst='git stash'
+alias gsp='git stash pop'
+alias gsl='git stash list'
+git_log_format='--pretty=format:"%C(yellow)%h %C(reset)- %C(red)%an%C(reset), %C(blue)%ar%C(reset): %s"'
+alias gl='git log '$git_log_format
+alias glg='git log --graph '$git_log_format
 
 # Why type more than one letter?
 alias v='vim'

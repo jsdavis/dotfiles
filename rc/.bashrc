@@ -9,7 +9,6 @@ fi
 source "$DOTFILES/lib/git/git-completion.bash"
 source "$DOTFILES/lib/git/git-prompt.sh"
 
-
 # Set the prompt to '$|#[Working Dir](git branch *|+|%)-> '
 # \[\e[1;35m\]          --> Purple
 # \$                    --> $ for user, # for root
@@ -27,6 +26,23 @@ GIT_PS1_SHOWUNTRACKEDFILES=1
 export PS1='\[\e[1;35m\]\$\[\e[0;34m\][\w]\[\e[0;32m\]$(__git_ps1 "(%s)")\[\e[1;35m\]-> \[\e[0m\]'
 
 PROMPT_DIRTRIM=3
+
+###############################################################################
+# Virtualenv helper function completions. Functions declared in sharedrc
+
+if func_exists ls_envs; then
+  _env_compl() {
+    if [ "${#COMP_WORDS[@]}" != "2" ]; then
+        return
+    fi
+    COMPREPLY=($(compgen -W "$(ls_envs)" "${COMP_WORDS[1]}"))
+  }
+  complete -F _env_compl activate
+  complete -F _env_compl cp_env
+  complete -F _env_compl mv_env
+  complete -F _env_compl rm_env
+  complete -F _env_compl inspect_env
+fi
 
 ###############################################################################
 # History things

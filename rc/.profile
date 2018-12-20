@@ -10,5 +10,3 @@ fi
 if [[ $OSTYPE == "darwin"* ]] && [ -f ~/.iterm2_shell_integration."$PROF_SHELL" ]; then
     source ~/.iterm2_shell_integration."$PROF_SHELL"
 fi
-
-source ~/."$PROF_SHELL"rc

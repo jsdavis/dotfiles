@@ -74,6 +74,10 @@ git_log_format='--pretty=format:"%C(yellow)%h %C(reset)- %C(red)%an%C(reset), %C
 alias gl='git log '$git_log_format
 alias glg='git log --graph '$git_log_format
 
+gpshn() {
+    git push --set-upstream origin $1
+}
+
 # Why type more than one letter?
 alias v='vim'
 alias c='clear'
@@ -90,6 +94,14 @@ alias md='mkdir -p'
 
 # Fast update script
 alias apt-update='sudo $DOTFILES/bin/apt-update.sh'
+
+# Docker shortcuts
+if [ -x "$(command -v docker)" ]; then
+    alias rm_containers="docker rm -f $(docker container ls -a | cut -f 1 -d ' ' | tail -n +2)"
+    alias rm_images="docker rmi $(docker images | cut -c 72-83 | tail -n +3)"
+    alias clean_docker="rm_containers && rm_images"
+fi
+
 
 # These aliases are only for WSL systems
 if [ -d '/mnt/c/Windows' ]; then

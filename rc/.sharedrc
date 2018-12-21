@@ -1,4 +1,8 @@
+# Default dotfiles location, can be overriden in local rc files
 export DOTFILES=~/dotfiles
+
+# Preferred editor for local and remote sessions
+export EDITOR='vim'
 
 # Helper function to decide if a function exists
 func_exists() {
@@ -6,27 +10,13 @@ func_exists() {
   return $?
 }
 
-# .local rc if applicable
-if [ -f ~/"$RC.local" ]; then
-    source ~/"$RC.local"
-fi
-
-# Preferred editor for local and remote sessions
-export EDITOR='vim'
-
 # Initialize pyenv if we have it
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 
-# added by Anaconda3 installer
-# export PATH="/home/jsdavis/anaconda3/bin:$PATH"
-
-# Import custom ls colors if they exist
-if [ -x "$(command -v dircolors)" ]; then
-    [ -e $DOTFILES/lib/colors/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lib/colors/lscolors.sh) || eval $(dircolors -b)
-fi
-
-# If we have virtualenv and VIRTUALENV_HOME, enable these helper functions
-if [[ -n $VIRTUALENV_HOME && $(command -v virtualenv) ]]; then
+# If we have virtualenv, enable these helper functions
+if [[ $(command -v virtualenv) ]]; then
+  # Default virtualenv home, can be overriden in local RC files
+  export VIRTUALENV_HOME=~/virtualenv/
   mk_env() {
       virtualenv $VIRTUALENV_HOME$1
   }
@@ -56,6 +46,19 @@ if [[ -n $VIRTUALENV_HOME && $(command -v virtualenv) ]]; then
     pip freeze
     deactivate
   }
+fi
+
+# .local rc if applicable
+if [ -f ~/"$RC.local" ]; then
+    source ~/"$RC.local"
+fi
+
+# added by Anaconda3 installer
+# export PATH="/home/jsdavis/anaconda3/bin:$PATH"
+
+# Import custom ls colors if they exist
+if [ -x "$(command -v dircolors)" ]; then
+    [ -e $DOTFILES/lib/colors/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lib/colors/lscolors.sh) || eval $(dircolors -b)
 fi
 
 # NVM things

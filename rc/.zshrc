@@ -121,16 +121,6 @@ done
 # Load the theme
 source "$ZSH/zsh-theme"
 
-###############################################################################
-
-# User configuration
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
 # Set personal aliases, overriding any made by plugins
 # For a full list of active aliases, run `alias`.
 source ~/.aliases

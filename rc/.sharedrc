@@ -10,6 +10,11 @@ func_exists() {
   return $?
 }
 
+# Helper function to delete a line containing a pattern from a file
+del_line() {
+  grep -w -v "$1" "$2" > "$2".tmp && command mv "$2".tmp $2
+}
+
 # Initialize pyenv if we have it
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
 
@@ -80,6 +85,17 @@ if [ -x "$(command -v docker)" ]; then
       esac
     else
       command docker $@
+    fi
+  }
+fi
+
+# Git extensions
+if [ -x "$(command -v git)" ]; then
+  git() {
+    if [[ "${1}" = "mr" ]]; then
+      command git fetch origin merge-requests/$2/head:mr-origin-$2 && command git checkout mr-origin-$2
+    else
+      command git $@
     fi
   }
 fi

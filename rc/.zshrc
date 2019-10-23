@@ -47,7 +47,7 @@ VIRTUAL_ENV_DISABLE_PROMPT="true"
 
 # Which plugins would you like to load? (plugins can be found in $DOTFILES/plugins/*)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(fast-syntax-highlighting fasd colored-man-pages shrink-path extract command-not-found my-web-search zsh-autosuggestions)
+plugins=(fast-syntax-highlighting fasd colored-man-pages shrink-path extract command-not-found zsh-autosuggestions)
 
 ###############################################################################
 # Initializes Oh My Zsh

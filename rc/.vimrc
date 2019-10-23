@@ -97,9 +97,9 @@ set statusline+=%*
 let g:syntastic_javascript_checkers = ['eslint']
 
 "Better whitespace settings
+let g:current_line_whitespace_disabled_soft = 1
 augroup togglestrip
   au!
-  autocmd VimEnter * CurrentLineWhitespaceOff soft
   autocmd VimEnter * ToggleStripWhitespaceOnSave
 augroup END
 

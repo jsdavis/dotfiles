@@ -14,14 +14,12 @@ if [ -f ~/.sharedrc ]; then
 fi
 
 # Tab completion for virtualenv helper functions created in .sharedrc
-if func_exists ls_envs; then
+if func_exists lsenvs; then
   _env_compl() {
-    reply=( "${(ps:\n:)$(ls_envs)}" )
+    reply=( "${(ps:\n:)$(lsenvs)}" )
   }
-  compctl -K _env_compl activate
-  compctl -K _env_compl cp_env
-  compctl -K _env_compl mv_env
-  compctl -K _env_compl rm_env
+  compctl -K _env_compl workon
+  compctl -K _env_compl rmenv
   compctl -K _env_compl inspect_env
 fi
 

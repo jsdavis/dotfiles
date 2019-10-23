@@ -6,114 +6,170 @@ export EDITOR='vim'
 
 # Helper function to decide if a function exists
 func_exists() {
-  declare -f $1 > /dev/null
-  return $?
+    declare -f $1 > /dev/null
+    return $?
 }
 
 # Helper function to delete a line containing a pattern from a file
 del_line() {
-  grep -w -v "$1" "$2" > "$2".tmp && command mv "$2".tmp $2
+    grep -w -v "$1" "$2" > "$2".tmp && command mv "$2".tmp $2
 }
 
-# Initialize pyenv if we have it
-[ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
-
-# If we have virtualenv, enable these helper functions
-if [[ $(command -v virtualenv) ]]; then
-  # Default virtualenv home, can be overriden in local RC files
-  export VIRTUALENV_HOME=~/virtualenv/
-  mk_env() {
-      virtualenv $VIRTUALENV_HOME$1
-  }
-
-  cp_env() {
-    cp -r $VIRTUALENV_HOME$1 $VIRTUALENV_HOME$2
-  }
-
-  mv_env() {
-    mv $VIRTUALENV_HOME$1 $VIRTUALENV_HOME$2
-  }
-
-  rm_env() {
-    for i; do rm -rf $VIRTUALENV_HOME$i; done
-  }
-
-  ls_envs() {
-      command ls $VIRTUALENV_HOME
-  }
-
-  activate() {
-      source $VIRTUALENV_HOME$1/bin/activate
-  }
-
-  inspect_env() {
-    activate $1
-    pip freeze
-    deactivate
-  }
-fi
+# Helper function for retrying a command N times
+retry() {
+    try=1
+    max_tries=$1
+    until [ ${try} -gt ${max_tries} ]; do
+        ${@:2} && break
+        echo "Try ${try}/${max_tries} for command failed...\n"
+        try=$((try+1))
+    done
+}
 
 # .local rc if applicable
 if [ -f ~/"$RC.local" ]; then
     source ~/"$RC.local"
 fi
 
-# added by Anaconda3 installer
-# export PATH="/home/jsdavis/anaconda3/bin:$PATH"
+# Fix GPG and its stupidity
+if [ -x "$(command -v gpg-agent)" ]; then
+    export GPG_TTY=$(tty)
+    if [[ -f "${HOME}/.gnupg/.gpg-agent-info" ]]; then
+        source "${HOME}/.gnupg/.gpg-agent-info"
+        export GPG_AGENT_INFO
+    fi
+fi
+
+# Make less smarter about output that doesn't need scrolling
+export LESS="--no-init --quit-if-one-screen -R"
+
+# Initialize pyenv if we have it
+[ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
+
+# Use pyenv virtualenv if we can
+if [ -x "$(command -v pyenv-virtualenv-init)" ]; then
+    eval "$(pyenv virtualenv-init -)"
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+    export VIRTUAL_ENV_DISABLE_PROMPT="true"
+
+    mkenv() {
+        pyenv virtualenv $@
+    }
+
+    rmenv() {
+        for i; do pyenv virtualenv-delete $i; done
+    }
+
+    lsenvs() {
+        find $(pyenv root)/versions -maxdepth 1 -type l | xargs basename
+    }
+
+    workon() {
+        pyenv activate $@
+    }
+
+    leave() {
+        pyenv deactivate
+    }
+
+    inspect_env() {
+        workon $1
+        pip freeze
+        leave
+    }
+
+# If we have virtualenv, enable these helper functions
+elif [ -x "$(command -v virtualenv)" ]; then
+    # Default virtualenv home, can be overriden in local RC files
+    export VIRTUALENV_HOME=~/virtualenv/
+
+    mkenv() {
+        virtualenv $VIRTUALENV_HOME$1
+    }
+
+    rmenv() {
+        for i; do rm -rf $VIRTUALENV_HOME$i; done
+    }
+
+    lsenvs() {
+        command ls $VIRTUALENV_HOME
+    }
+
+    activate() {
+        source $VIRTUALENV_HOME$1/bin/activate
+    }
+
+    workon() {
+        activate $@
+    }
+
+    leave() {
+        deactivate
+    }
+
+    inspect_env() {
+        activate $1
+        pip freeze
+        deactivate
+    }
+fi
 
 # Import custom ls colors if they exist
 if [ -x "$(command -v dircolors)" ]; then
-  [ -e $DOTFILES/lib/colors/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lib/colors/lscolors.sh) || eval $(dircolors -b)
+    [ -e $DOTFILES/lib/colors/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lib/colors/lscolors.sh) || eval $(dircolors -b)
 fi
 
 # Docker extensions
 if [ -x "$(command -v docker)" ]; then
-  docker() {
-    if [[ "${1}" = "clean" ]]; then
-      case $2 in
-        'containers')
-          command docker rm -f $(command docker container ls -a -q)
-          ;;
-        'images')
-          command docker rmi -f $(command docker images -q)
-          ;;
-        'all')
-          docker clean containers && docker clean images
-          ;;
-        '*')
-          exit 1
-      esac
-    else
-      command docker $@
-    fi
-  }
+    docker() {
+        if [[ "${1}" = "clean" ]]; then
+            case $2 in
+                'containers')
+                    command docker rm -f $(command docker container ls -a -q)
+                ;;
+                'images')
+                    command docker rmi -f $(command docker images -q)
+                ;;
+                'all')
+                    docker clean containers && docker clean images
+                ;;
+                '*')
+                    exit 1
+            esac
+        else
+            command docker $@
+        fi
+    }
 fi
 
 # Git extensions
 if [ -x "$(command -v git)" ]; then
-  git() {
-    if [[ "${1}" = "mr" ]]; then
-      command git fetch origin merge-requests/$2/head:mr-origin-$2 && command git checkout mr-origin-$2
-    else
-      command git $@
-    fi
-  }
+    git() {
+        if [[ "${1}" = "mr" ]]; then
+            command git fetch origin merge-requests/$2/head:mr-origin-$2 && command git checkout mr-origin-$2
+        elif [[ "${1}" = "update" ]]; then
+            command git fetch && command git merge origin/$2
+        elif [[ "${1}" = "commit" ]]; then
+            retry 2 command git commit ${@:2}
+        else
+            command git $@
+        fi
+    }
 fi
-
 
 # NVM things
 # Defer initialization of nvm until nvm, node or a node-dependent command is
 # run. Ensure this block is only run once if .bashrc gets sourced multiple times
 # by checking whether __init_nvm is a function.
 if [ -s "$HOME/.nvm/nvm.sh" ] && ! func_exists __init_nvm; then
-  export NVM_DIR="$HOME/.nvm"
-  # [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
-  declare -a __node_commands=('nvm' 'node' 'npm' 'yarn' 'gulp' 'grunt' 'webpack')
-  function __init_nvm() {
-    for i in "${__node_commands[@]}"; do unalias $i; done
-    source "$NVM_DIR"/nvm.sh
-    unset __node_commands
-    unset -f __init_nvm
-  }
-  for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
+    export NVM_DIR="$HOME/.nvm"
+    # [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+    declare -a __node_commands=('nvm' 'node' 'npm' 'npx' 'yarn' 'gulp' 'grunt' 'webpack')
+    function __init_nvm() {
+        for i in "${__node_commands[@]}"; do unalias $i; done
+            source "$NVM_DIR"/nvm.sh
+            unset __node_commands
+            unset -f __init_nvm
+        }
+    for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
 fi

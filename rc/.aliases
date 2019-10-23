@@ -19,11 +19,15 @@ if [ ! -z $PROFILE ]; then
     fi
 fi
 
-# Easy edit aliases and vimrc
+# Easy edit other dotfiles
+alias vdot="vim $DOTFILES"
+alias vsh="vim $DOTFILES/rc/.sharedrc"
 alias va="vim ~/.aliases"
 alias vimrc="vim ~/.vimrc"
 
 if [ -x "$(command -v subl)" ]; then
+    alias subdot="subl $DOTFILES"
+    alias subsh="subl $DOTFILES/rc/.sharedrc"
     alias suba="subl ~/.aliases"
     alias subvim="subl ~/.vimrc"
 fi
@@ -73,7 +77,7 @@ alias gsl='git stash list'
 git_log_format='--pretty=format:"%C(yellow)%h %C(reset)- %C(red)%an%C(reset), %C(blue)%ar%C(reset): %s"'
 alias gl='git log '$git_log_format
 alias glg='git log --graph '$git_log_format
-alias gpshn='git push --set-upstream origin $(git branch | grep \* | cut -d " " -f 2)'
+alias gpshn='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
 
 # Why type more than one letter?
 alias v='vim'

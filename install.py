@@ -21,6 +21,8 @@ def platform():
         return 'mac'
     elif os.path.isdir('/mnt/c/Windows'):
         return 'wsl'
+    elif os.path.exists('/etc/redhat-release'):
+        return 'rhel'
     else:
         return 'linux'
 
@@ -38,7 +40,7 @@ def install(func=None, platforms=None, ask=None, name=None, order=10):
         return partial(install, platforms=platforms, ask=ask, name=None, order=order)
 
     if platforms is None:
-        platforms = ('wsl', 'mac', 'linux')
+        platforms = ('wsl', 'mac', 'linux', 'rhel')
 
     func.is_install_step = True
     func.supported = platform() in platforms
@@ -231,7 +233,7 @@ class Installer(object):
 
     @install(platforms=['mac'], ask='Install Homebrew packages?')
     def brew_apps(self):
-        packages = ['pyenv', 'wget', 'rename', 'fasd']
+        packages = ['pyenv-virtualenv', 'wget', 'rename', 'fasd']
         cmd = 'brew install {}'.format(' '.join(p for p in packages))
         self.run_cmd(cmd)
 
@@ -248,6 +250,24 @@ class Installer(object):
             'cd {0} && ' \
             'git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`; ' \
             'cd {1}'.format(os.path.join(os.path.expanduser('~'), '.nvm'), self.dir)
+        self.run_cmd(cmd)
+
+    @install(platforms=['rhel'], ask='Install zsh rpm and set as default shell?')
+    def zsh_rpm(self):
+        rpm_url = 'http://mirror.ghettoforge.org/distributions/gf/el/7/plus/x86_64/zsh-5.1-1.gf.el7.x86_64.rpm'
+        cmds = [
+            'curl -o zsh.rpm {}'.format(rpm_url),
+            'sudo rpm -Uvh zsh.rpm',
+            'rm -f zsh.rpm',
+            'chsh -s $(which zsh)'
+        ]
+        for cmd in cmds:
+            self.run_cmd(cmd)
+
+    @install(platforms=['rhel'], ask='Install yum packages?')
+    def yum_packages(self):
+        packages = ['fasd']
+        cmd = 'sudo yum install -y {}'.format(' '.join(p for p in packages))
         self.run_cmd(cmd)
 
 

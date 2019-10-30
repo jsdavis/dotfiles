@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
+import argparse
 import os
 import glob
 import errno
@@ -44,18 +47,21 @@ def install(func=None, platforms=None, ask=None, name=None, order=10):
 
     func.is_install_step = True
     func.supported = platform() in platforms
-    func.ask = '\n{} (y)/n '.format(ask) if ask is not None else ask
+    func.ask = '\n{} (y)/n '.format(ask) if ask is not None else None
     func.order = order
     func.pretty_name = name if name is not None else func.__name__.replace('_', ' ').title()
 
     @wraps(func)
-    def decorator(*args, **kwargs):
+    def decorator(self, skip_ask, *args, **kwargs):
         if not func.supported:
             raise NotSupportedError('This operation is not supported on the {} platform'.format(platform()))
 
-        func.run = ask_user(func.ask) if func.ask is not None else True
+        func.run = skip_ask or (ask_user(func.ask) if func.ask is not None else True)
         if func.run:
-            return func(*args, **kwargs)
+            if not self.dry_run:
+                return func(self, *args, **kwargs)
+            else:
+                print('DRY RUN: INSTALL STEP "{}"'.format(func.pretty_name))
         else:
             print('{} will not be installed.'.format(func.pretty_name))
     return decorator
@@ -69,17 +75,52 @@ class Installer(object):
         self.rc_dir = os.path.join(self.dir, 'rc')
         self.font_dir = os.path.join(self.dir, 'bin', 'font')
 
+    @property
+    def args(self):
+        if not hasattr(self, '_args'):
+            parser = argparse.ArgumentParser(description='Dotfiles installer by @jsdavis')
+            parser.add_argument('--no-prompts', action='store_true',
+                                help='Run all compatible tasks without prompting')
+            parser.add_argument('--dry-run', action='store_true')
+
+            group = parser.add_argument_group(title='Tasks',
+                description='Explicit task flags. Giving none of these is equivalent to saying "run all tasks"')
+
+            for install in self.get_installs():
+                name = install.__name__
+                help_str = install.__doc__ if install.__doc__ else 'Perform "{}" task.'.format(name)
+                group.add_argument('--{}'.format(name.replace('_', '-')), action='store_true', help=help_str)
+
+            self._args = vars(parser.parse_args())
+            self._dry_run = self._args.pop('dry_run', False)
+
+        return self._args
+
+    @property
+    def dry_run(self):
+        if not hasattr(self, '_dry_run'):
+            self._dry_run = self.args.pop('dry_run', False)
+        return self._dry_run
+
     def run(self):
+        skip_default = self.args.pop('no_prompts', False)
+        run_all = not any(self.args.values())
+
         for install in self.get_installs():
-            install(self)
+            specified = self.args.get(install.__name__, False)
+
+            if run_all or specified:
+                skip_ask = skip_default or specified
+                install(self, skip_ask)
 
         print("\nInstallation complete!")
 
     def run_cmd(self, cmd):
         print('-' * 50)
         print(cmd)
-        os.system(cmd)
+        result = os.system(cmd)
         print('-' * 50)
+        return result
 
     @classmethod
     def get_installs(cls, supported_only=True):
@@ -99,6 +140,9 @@ class Installer(object):
 
     @install(ask='Do you want to install dotfiles?', order=0)
     def dotfiles(self):
+        """
+        Install bash, zsh, and vim configurations to this user's home
+        """
         print("\nSetting up dotfiles...\n")
 
         # For Windows filesystem compatability
@@ -141,6 +185,9 @@ class Installer(object):
 
     @install(platforms=['wsl', 'mac'], ask='Do you want to install fonts?')
     def fonts(self):
+        """
+        Install special Powerline font for cool symbols
+        """
         if self.platform == 'wsl':
             return self._wsl_fonts()
         elif self.platform == 'mac':
@@ -207,6 +254,9 @@ class Installer(object):
 
     @install(platforms=['mac'], ask='Configure MacOS settings?')
     def mac_settings(self):
+        """
+        Fix some mac settings, like showing hidden files, fixing accent key behavior, and mouse stuff
+        """
         commands = [
             'defaults write com.apple.finder AppleShowAllFiles YES',  # Show hidden files
             'defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false',  # No accents on holding keys
@@ -218,6 +268,9 @@ class Installer(object):
 
     @install(platforms=['mac'], ask='Install MacOS packages?', order=1)
     def mac_apps(self):
+        """
+        Install xcode and homebrew
+        """
         commands = [
             # XCode dev tools, includes git
             'xcode-select --install',
@@ -233,18 +286,27 @@ class Installer(object):
 
     @install(platforms=['mac'], ask='Install Homebrew packages?')
     def brew_apps(self):
+        """
+        Install useful MacOS CLI applications view homebrew
+        """
         packages = ['pyenv-virtualenv', 'wget', 'rename', 'fasd']
         cmd = 'brew install {}'.format(' '.join(p for p in packages))
         self.run_cmd(cmd)
 
     @install(platforms=['mac'], ask='Install Homebrew casks?', order=100)
     def brew_casks(self):
+        """
+        Install useful MacOS UI applications via homebrew cask
+        """
         casks = ['iterm2', 'sublime-text', 'google-chrome', 'slack', 'postman', 'docker', 'spotify']
         cmd = 'brew cask install {}'.format(' '.join(c for c in casks))
         self.run_cmd(cmd)
 
     @install(ask='Install NVM?')
     def nvm(self):
+        """
+        Download and install Node Version Manager
+        """
         cmd = \
             'git clone https://github.com/creationix/nvm.git {0} && ' \
             'cd {0} && ' \
@@ -252,20 +314,31 @@ class Installer(object):
             'cd {1}'.format(os.path.join(os.path.expanduser('~'), '.nvm'), self.dir)
         self.run_cmd(cmd)
 
-    @install(platforms=['rhel'], ask='Install zsh rpm and set as default shell?')
-    def zsh_rpm(self):
-        rpm_url = 'http://mirror.ghettoforge.org/distributions/gf/el/7/plus/x86_64/zsh-5.1-1.gf.el7.x86_64.rpm'
-        cmds = [
-            'curl -o zsh.rpm {}'.format(rpm_url),
-            'sudo rpm -Uvh zsh.rpm',
-            'rm -f zsh.rpm',
-            'chsh -s $(which zsh)'
-        ]
+    @install(platforms=['rhel'], ask='Install zsh and set as default shell?')
+    def zsh(self):
+        """
+        Download and install zsh if not present, and set it as this user's default shell
+        """
+        zsh_installed = self.run_cmd('which zsh') == 0
+        cmds = []
+
+        if not zsh_installed:
+            rpm_url = 'http://mirror.ghettoforge.org/distributions/gf/el/7/plus/x86_64/zsh-5.1-1.gf.el7.x86_64.rpm'
+            cmds.extend([
+                'curl -o zsh.rpm {}'.format(rpm_url),
+                'sudo rpm -Uvh zsh.rpm',
+                'rm -f zsh.rpm'
+            ])
+        cmds.append('chsh -s $(which zsh)')
+
         for cmd in cmds:
             self.run_cmd(cmd)
 
     @install(platforms=['rhel'], ask='Install yum packages?')
     def yum_packages(self):
+        """
+        Install useful yum packages
+        """
         packages = ['fasd']
         cmd = 'sudo yum install -y {}'.format(' '.join(p for p in packages))
         self.run_cmd(cmd)

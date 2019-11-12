@@ -20,10 +20,12 @@ retry() {
     try=1
     max_tries=$1
     until [ ${try} -gt ${max_tries} ]; do
-        ${@:2} && break
+        ${@:2} && return 0
+        exit_code=$?
         echo "Try ${try}/${max_tries} for command failed...\n"
         try=$((try+1))
     done
+    return $exit_code
 }
 
 # .local rc if applicable

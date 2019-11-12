@@ -176,11 +176,17 @@ fi
 if [ -x "$(command -v git)" ]; then
     git() {
         if [[ "${1}" = "mr" ]]; then
+            # Shortcut for checking out an MR by number (GitLab specific)
             command git fetch origin merge-requests/$2/head:mr-origin-$2 && command git checkout mr-origin-$2
         elif [[ "${1}" = "update" ]]; then
+            # Shortcut for merging remote branch into working branch
             command git fetch && command git merge origin/$2
         elif [[ "${1}" = "commit" ]]; then
+            # Auto-retry git commit for handling formatter pre-commit jobs
             retry 2 command git commit ${@:2}
+        elif [[ "${1}" = "cleanmerged" ]]; then
+            # Clean out my merged branches
+            command git branch --merged | grep -v "*" | xargs command git branch -d
         else
             command git $@
         fi

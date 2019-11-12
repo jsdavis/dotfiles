@@ -61,7 +61,7 @@ if [ -x "$(command -v pyenv-virtualenv-init)" ]; then
     }
 
     lsenvs() {
-        find $(pyenv root)/versions -maxdepth 1 -type l | xargs basename
+        find $(pyenv root)/versions -maxdepth 1 -type l -not -name \*brew -not -name versions | xargs basename
     }
 
     workon() {
@@ -78,17 +78,45 @@ if [ -x "$(command -v pyenv-virtualenv-init)" ]; then
         leave
     }
 
+    chenv() {
+        local new_version=$1
+        local env_name=$2
+        local reqs=`mktemp -t ${env_name}` || exit 1
+
+        inspect_env ${env_name} > ${reqs}
+        rmenv ${env_name}
+        mkenv ${new_version} ${env_name}
+        workon ${env_name}
+        pip install -r ${reqs}
+        leave
+        rm -f ${reqs}
+    }
+
+    mvenv() {
+        local old_name=$1
+        local new_name=$2
+        local reqs=`mktemp -t ${new_name}` || exit 1
+
+        inspect_env ${old_name} > ${reqs}
+        rmenv ${old_name}
+        mkenv ${new_name}
+        workon ${new_name}
+        pip install -r ${reqs}
+        leave
+        rm -f ${reqs}
+    }
+
 # If we have virtualenv, enable these helper functions
 elif [ -x "$(command -v virtualenv)" ]; then
     # Default virtualenv home, can be overriden in local RC files
-    export VIRTUALENV_HOME=~/virtualenv/
+    export VIRTUALENV_HOME=~/virtualenv
 
     mkenv() {
-        virtualenv $VIRTUALENV_HOME$1
+        virtualenv $VIRTUALENV_HOME/$1
     }
 
     rmenv() {
-        for i; do rm -rf $VIRTUALENV_HOME$i; done
+        for i; do rm -rf $VIRTUALENV_HOME/$i; done
     }
 
     lsenvs() {
@@ -96,7 +124,7 @@ elif [ -x "$(command -v virtualenv)" ]; then
     }
 
     activate() {
-        source $VIRTUALENV_HOME$1/bin/activate
+        source $VIRTUALENV_HOME/$1/bin/activate
     }
 
     workon() {

@@ -112,3 +112,4 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 source ~/.aliases
+

@@ -83,6 +83,8 @@ alias gpshn='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
 alias v='vim'
 alias c='clear'
 
+alias dco='docker-compose'
+
 # For when we forget sudo
 # alias fuck='sudo $(history -p !!)'
 alias fuck='sudo $(fc -ln -1)'

@@ -78,6 +78,7 @@ git_log_format='--pretty=format:"%C(yellow)%h %C(reset)- %C(red)%an%C(reset), %C
 alias gl='git log '$git_log_format
 alias glg='git log --graph '$git_log_format
 alias gpshn='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
+alias gpshf='git push --force'
 
 # Why type more than one letter?
 alias v='vim'

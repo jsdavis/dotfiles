@@ -1,0 +1,5 @@
+#!/bin/bash
+mr_id=${1}
+
+git fetch origin merge-requests/${mr_id}/head:mr-origin-${mr_id}
+git checkout mr-origin-${mr_id}

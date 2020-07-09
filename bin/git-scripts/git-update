@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('branch')
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--merge', dest='action', action='store_const', const='merge'
+    )
+    group.add_argument(
+        '--rebase', dest='action', action='store_const', const='rebase'
+    )
+
+    parser.add_argument('-i', '--interactive', action='store_true')
+
+    args = parser.parse_args()
+    if not (args.action):
+        args.action = 'rebase'
+    return args
+
+
+def main():
+    args = parse_args()
+    os.system('git fetch')
+    os.system(
+        'git {action} origin/{branch}{interactive}'.format(
+            action=args.action,
+            branch=args.branch,
+            interactive=' -i' if args.interactive else ''
+        )
+    )
+
+
+if __name__ == '__main__':
+    main()

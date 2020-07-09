@@ -2,3 +2,4 @@
 lib/zsh/cache/*
 .DS_Store
 .iterm2/
+history/*

@@ -1,6 +1,9 @@
 # Default dotfiles location, can be overriden in local rc files
 export DOTFILES=~/dotfiles
 
+# Default history file location, can be overriden in local rc files
+export HISTFILE=${DOTFILES}/history/.${PROF_SHELL}_history
+
 # Preferred editor for local and remote sessions
 export EDITOR='vim'
 

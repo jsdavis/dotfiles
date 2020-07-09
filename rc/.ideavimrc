@@ -1,0 +1,2 @@
+"Shared configuration between vim and JetBrains IDEs
+source ~/.shared.vim

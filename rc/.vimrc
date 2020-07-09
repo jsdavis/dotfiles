@@ -1,8 +1,5 @@
 set nocompatible                "no vi compatibility
 
-"Change leader to ,
-let mapleader = ","
-
 "********************** Vim Plug Settings *************************
 
 " Auto install vim-plug if it's not installed already
@@ -128,22 +125,17 @@ set foldlevelstart=1            "don't fold the whole file
 set foldmethod=syntax           "fold automatically by syntax
 set foldnestmax=1               "don't nest my folds
 set history=1000                "way more than 20
-set hlsearch                    "highlighted search
-set incsearch                   "incremental search
-set ignorecase                  "ignore cases in search
 set linebreak                   "only break at words
 set linespace=0                 "no space between lines
 set modeline                    "show what I'm doing
 set noerrorbells                "don't yell at me
 set nojoinspaces                "don't make whitespace on joins
-set number relativenumber       "line numbers
 set ruler                       "show ruler
 set scrolloff=3                 "don't allow cursor less than 3 lines from edge
 set shiftwidth=4                "make tabs 4 spaces
 set showcmd                     "show incomplete commands
 set showmatch                   "show matched parentheses/brackets
 set showmode                    "show what mode I'm on
-set smartcase                   "allow uppercase searches
 set softtabstop=4               "make tabs 4 spaces
 set splitbelow                  "open new windows below
 set splitright                  "open new windows to the right
@@ -153,7 +145,6 @@ set t_Co=256                    "force 256 colors
 set virtualedit=onemore         "let cursor go past end of line
 set winminheight=0              "minimum window height zero lines
 set shellslash                  "fix Cygwin and Syntastic
-
 
 :colorscheme solarized "Color scheme COMMENT OUT FOR COMPATIBILITY
 ":colorscheme elflord "UNCOMMENT FOR COMPATIBILITY
@@ -200,29 +191,9 @@ nnoremap <leader>= <C-W>=
 "Better buffer navigation
 nnoremap <C-L> :bnext<CR>
 
-"Better undo/redo
-nnoremap U <C-R>
-nnoremap <C-R> U
-
 "Easily edit and source .vimrc
 nnoremap <leader>ev :tabe $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
-
-"Exit/Save files faster
-nnoremap <leader>q :q<cr>
-nnoremap <leader>x :x<cr>
-nnoremap <leader>w :w<cr>
-
-"Add newlines in command mode
-nnoremap q o<esc>
-nnoremap Q O<esc>
-
-"Get to normal mode with jk in insert mode
-inoremap jk <esc>
-
-"Fix indents without leaving visual mode
-vnoremap < <gv
-vnoremap > >gv
 
 "Make opening help faster
 cabbrev h tab help
@@ -233,5 +204,5 @@ cabbrev t tabedit
 "Make opening new buffers faster
 cabbrev e edit
 
-"Go ALL the way to the end
-vnoremap G G$
+"Shared configuration between vim and JetBrains IDEs
+source ~/.shared.vim

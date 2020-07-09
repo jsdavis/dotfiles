@@ -61,7 +61,7 @@ alias la='ls -A'
 
 # git aliases
 alias gc='git commit -m'
-alias gca='git commit -am'
+alias gca='retry 2 git commit -am'  # auto-retry because of pre-commit
 alias gs='git status'
 alias gch='git checkout'
 alias gb='git branch'

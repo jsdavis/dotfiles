@@ -1,0 +1,19 @@
+#!/bin/bash
+target=${1}
+
+log=$(mktemp /tmp/changelog.md)
+
+{
+    echo "### Changelog"
+    echo ""
+    git log ${target}...HEAD --oneline --pretty="* %s" --no-merges --reverse
+} > ${log}
+
+"${EDITOR:-vi}" ${log}
+
+if [ -x "$(command -v pbcopy)" ]; then
+    cat ${log} | pbcopy
+fi
+
+cat ${log}
+rm -f ${log}

@@ -1,0 +1,5 @@
+# Global .gitignore file
+
+*.swp
+.DS_Store
+.python-version

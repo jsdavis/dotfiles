@@ -2,6 +2,11 @@
 
 from __future__ import print_function
 
+try:
+    from builtins import input
+except ImportError:
+    from __builtin__ import raw_input as input
+
 import argparse
 import os
 import glob
@@ -12,7 +17,13 @@ import sys
 from functools import partial, wraps
 
 # Got this from StackOverflow and it works so don't touch it
-magic_powershell_command = 'powershell.exe -command "&{ start-process powershell -ArgumentList \'-executionpolicy bypass -command \"C:\\font\\Add-Font.ps1 C:\\font\\fonts\"\' -verb RunAs}"'
+magic_powershell_command = (
+    'powershell.exe -command '
+    '"&{ start-process powershell '
+        '-ArgumentList \'-executionpolicy bypass '
+        '-command \"C:\\font\\Add-Font.ps1 C:\\font\\fonts\"\' '
+        '-verb RunAs}"'
+)
 
 
 class NotSupportedError(Exception):
@@ -33,7 +44,7 @@ def platform():
 def ask_user(question):
     ans = 'ans'
     while ans and not (ans.startswith('n') or ans.startswith('y')):
-        ans = raw_input(question)
+        ans = input(question)
         ans = ans.strip().lower()
     return not (ans.startswith('n'))
 
@@ -54,7 +65,9 @@ def install(func=None, platforms=None, ask=None, name=None, order=10):
     @wraps(func)
     def decorator(self, skip_ask, *args, **kwargs):
         if not func.supported:
-            raise NotSupportedError('This operation is not supported on the {} platform'.format(platform()))
+            raise NotSupportedError(
+                'This operation is not supported on the {} platform'.format(platform())
+            )
 
         func.run = skip_ask or (ask_user(func.ask) if func.ask is not None else True)
         if func.run:
@@ -73,6 +86,7 @@ class Installer(object):
         self.dir = os.path.dirname(os.path.abspath(__file__))
 
         self.rc_dir = os.path.join(self.dir, 'rc')
+        self.lib_dir = os.path.join(self.dir, 'lib')
         self.font_dir = os.path.join(self.dir, 'bin', 'font')
 
     @property
@@ -83,13 +97,20 @@ class Installer(object):
                                 help='Run all compatible tasks without prompting')
             parser.add_argument('--dry-run', action='store_true')
 
-            group = parser.add_argument_group(title='Tasks',
-                description='Explicit task flags. Giving none of these is equivalent to saying "run all tasks"')
+            group = parser.add_argument_group(
+                title='Tasks',
+                description='Explicit task flags. '
+                            'Giving none of these is equivalent to saying "run all tasks"'
+            )
 
             for install in self.get_installs():
                 name = install.__name__
                 help_str = install.__doc__ if install.__doc__ else 'Perform "{}" task.'.format(name)
-                group.add_argument('--{}'.format(name.replace('_', '-')), action='store_true', help=help_str)
+                group.add_argument(
+                    '--{}'.format(name.lower().replace('_', '-')),
+                    action='store_true',
+                    help=help_str
+                )
 
             self._args = vars(parser.parse_args())
             self._dry_run = self._args.pop('dry_run', False)
@@ -241,8 +262,13 @@ class Installer(object):
                 raise
 
     def _fonts_installed_wsl(self, font_dir):
-        installed_fonts = [os.path.basename(font) for font in glob.glob('/mnt/c/Windows/Fonts/*.ttf')]
-        attempted_fonts = [os.path.basename(font) for font in glob.glob(os.path.join(font_dir, '*.ttf'))]
+        installed_fonts = [
+            os.path.basename(font) for font in glob.glob('/mnt/c/Windows/Fonts/*.ttf')
+        ]
+        attempted_fonts = [
+            os.path.basename(font) for font in glob.glob(os.path.join(font_dir, '*.ttf'))
+        ]
+
         for font in attempted_fonts:
             if font not in installed_fonts:
                 return False
@@ -255,14 +281,20 @@ class Installer(object):
     @install(platforms=['mac'], ask='Configure MacOS settings?')
     def mac_settings(self):
         """
-        Fix some mac settings, like showing hidden files, fixing accent key behavior, and mouse stuff
+        Fix some mac settings, like showing hidden files,
+        fixing accent key behavior, and mouse stuff
         """
         commands = [
-            'defaults write com.apple.finder AppleShowAllFiles YES',  # Show hidden files
-            'defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false',  # No accents on holding keys
-            'defaults write .GlobalPreferences com.apple.mouse.scaling -1',  # Turn off mouse acceleration
-            'defaults write .GlobalPreferences com.apple.scrollwheel.scaling -1'  # Turn off scroll acceleration
+            # Show hidden files
+            'defaults write com.apple.finder AppleShowAllFiles YES',
+            # No accents on holding keys
+            'defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false',
+            # Turn off mouse acceleration
+            'defaults write .GlobalPreferences com.apple.mouse.scaling -1',
+            # Turn off scroll acceleration
+            'defaults write .GlobalPreferences com.apple.scrollwheel.scaling -1',
         ]
+
         for cmd in commands:
             self.run_cmd(cmd)
 
@@ -276,7 +308,8 @@ class Installer(object):
             'xcode-select --install',
 
             # Homebrew and Homebrew cask.
-            '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"',
+            '/usr/bin/ruby -e '
+                '"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"',
             'brew update',
             'brew analytics off',
             'brew tap caskroom/cask'
@@ -307,11 +340,15 @@ class Installer(object):
         """
         Download and install Node Version Manager
         """
-        cmd = \
-            'git clone https://github.com/creationix/nvm.git {0} && ' \
-            'cd {0} && ' \
-            'git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`; ' \
+        cmd = (
+            'git clone https://github.com/creationix/nvm.git {0} && '
+            'cd {0} && '
+            'git checkout `'
+                'git describe '
+                '--abbrev=0 --tags --match "v[0-9]*" '
+                '$(git rev-list --tags --max-count=1)`; '
             'cd {1}'.format(os.path.join(os.path.expanduser('~'), '.nvm'), self.dir)
+        )
         self.run_cmd(cmd)
 
     @install(platforms=['rhel'], ask='Install zsh and set as default shell?')
@@ -323,7 +360,10 @@ class Installer(object):
         cmds = []
 
         if not zsh_installed:
-            rpm_url = 'http://mirror.ghettoforge.org/distributions/gf/el/7/plus/x86_64/zsh-5.1-1.gf.el7.x86_64.rpm'
+            rpm_url = (
+                'http://mirror.ghettoforge.org/distributions/gf/el/7/plus/x86_64/'
+                'zsh-5.1-1.gf.el7.x86_64.rpm'
+            )
             cmds.extend([
                 'curl -o zsh.rpm {}'.format(rpm_url),
                 'sudo rpm -Uvh zsh.rpm',
@@ -341,6 +381,15 @@ class Installer(object):
         """
         packages = ['fasd']
         cmd = 'sudo yum install -y {}'.format(' '.join(p for p in packages))
+        self.run_cmd(cmd)
+
+    @install(ask='Add global .gitignore?')
+    def gitignore(self):
+        """
+        Add a global .gitignore configuration to the system
+        """
+        gitignore = os.path.join(self.lib_dir, '.gitignore')
+        cmd = 'git config --global core.excludesfile {}'.format(gitignore)
         self.run_cmd(cmd)
 
 

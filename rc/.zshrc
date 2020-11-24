@@ -55,6 +55,11 @@ plugins=(fast-syntax-highlighting fasd colored-man-pages extract command-not-fou
 # add a function path
 fpath=($ZSH/functions $ZSH/completions $fpath)
 
+# Enable brew completions
+if type brew &>/dev/null; then
+  fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+fi
+
 # Load all stock functions (from $fpath files) called below.
 autoload -U compaudit compinit
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Fun script for seeing an author's historical impact on a git repo; checks for commits by the
+# passed-in author and will tell you how many lines they've added and removed from the repo
+
+author=${1}
+
+git log \
+    --author="${author}" \
+    --pretty=tformat: \
+    --numstat \
+    | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -

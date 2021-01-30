@@ -1,3 +1,7 @@
+!lib/zsh/cache
 lib/zsh/cache/*
+
 .iterm2/
+
+!history
 history/*

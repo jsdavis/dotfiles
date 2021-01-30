@@ -351,7 +351,7 @@ class Installer(object):
         )
         self.run_cmd(cmd)
 
-    @install(platforms=['rhel'], ask='Install zsh and set as default shell?')
+    @install(platforms=['rhel', 'linux'], ask='Install zsh and set as default shell?')
     def zsh(self):
         """
         Download and install zsh if not present, and set it as this user's default shell
@@ -359,7 +359,9 @@ class Installer(object):
         zsh_installed = self.run_cmd('which zsh') == 0
         cmds = []
 
-        if not zsh_installed:
+        if zsh_installed:
+            pass
+        elif self.platform == 'rhel':
             rpm_url = (
                 'http://mirror.ghettoforge.org/distributions/gf/el/7/plus/x86_64/'
                 'zsh-5.1-1.gf.el7.x86_64.rpm'
@@ -369,18 +371,26 @@ class Installer(object):
                 'sudo rpm -Uvh zsh.rpm',
                 'rm -f zsh.rpm'
             ])
+        elif self.platform == 'linux':
+            cmds.append('sudo apt-get install -y zsh')
+
         cmds.append('chsh -s $(which zsh)')
 
         for cmd in cmds:
             self.run_cmd(cmd)
 
-    @install(platforms=['rhel'], ask='Install yum packages?')
-    def yum_packages(self):
+    @install(platforms=['rhel', 'linux'], ask='Install os packages?')
+    def os_packages(self):
         """
         Install useful yum packages
         """
         packages = ['fasd']
-        cmd = 'sudo yum install -y {}'.format(' '.join(p for p in packages))
+
+        if self.platform == 'rhel':
+            cmd = 'sudo yum install -y {}'.format(' '.join(p for p in packages))
+        elif self.platform == 'linux':
+            cmd = 'sudo apt-get install -y {}'.format(' '.join(p for p in packages))
+
         self.run_cmd(cmd)
 
     @install(ask='Add global .gitignore?')

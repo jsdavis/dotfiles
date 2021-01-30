@@ -6,7 +6,7 @@ log=$(mktemp /tmp/changelog.md)
 {
     echo "### Changelog"
     echo ""
-    git log ${target}...HEAD --oneline --pretty="* %s" --no-merges --reverse
+    git log ${target}...HEAD --oneline --pretty="* %h - %s" --no-merges --reverse
 } > ${log}
 
 "${EDITOR:-vi}" ${log}

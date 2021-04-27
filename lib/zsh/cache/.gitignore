@@ -1,0 +1,3 @@
+# Ignore everything in this directory, but still post the empty dir to git
+*
+!.gitignore

@@ -147,6 +147,12 @@ elif [ -x "$(command -v virtualenv)" ]; then
     }
 fi
 
+# Initialize rbenv if we have it
+if [ -d "$HOME/.rbenv" ]; then
+    export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+    eval "$(rbenv init -)"
+fi
+
 # Import custom ls colors if they exist
 if [ -x "$(command -v dircolors)" ]; then
     [ -e $DOTFILES/lib/colors/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lib/colors/lscolors.sh) || eval $(dircolors -b)
@@ -177,6 +183,9 @@ fi
 
 # Git extensions
 export PATH=${PATH}:${DOTFILES}/bin/git-scripts
+
+# Golang stuff
+[ -d ~/go/bin ] && export PATH=${PATH}:~/go/bin
 
 # NVM things
 # Defer initialization of nvm until nvm, node or a node-dependent command is

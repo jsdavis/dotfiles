@@ -19,20 +19,21 @@ def parse_args():
 
     parser.add_argument('-i', '--interactive', action='store_true')
 
-    args = parser.parse_args()
+    args, extra_args = parser.parse_known_args()
     if not (args.action):
         args.action = 'rebase'
-    return args
+    return args, extra_args
 
 
 def main():
-    args = parse_args()
+    args, extra_args = parse_args()
     os.system('git fetch')
     os.system(
-        'git {action} origin/{branch}{interactive}'.format(
+        'git {action} origin/{branch}{interactive} {extra}'.format(
             action=args.action,
             branch=args.branch,
-            interactive=' -i' if args.interactive else ''
+            interactive=' -i' if args.interactive else '',
+            extra=' '.join(extra_args)
         )
     )
 

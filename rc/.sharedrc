@@ -61,7 +61,7 @@ command_exists pyenv && eval "$(pyenv init --path)"
 command_exists pyenv && eval "$(pyenv init -)"
 
 # Use pyenv virtualenv if we can
-if command_exists pyenv-virtualenv-init; then
+if command_exists pyenv; then
     eval "$(pyenv virtualenv-init -)"
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
     export VIRTUAL_ENV_DISABLE_PROMPT="true"

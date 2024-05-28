@@ -3,8 +3,9 @@ if [ -z "$HISTFILE" ]; then
     HISTFILE=$HOME/.zsh_history
 fi
 
-HISTSIZE=100000
-SAVEHIST=20000
+# One billion is effectively infinite
+HISTSIZE=1000000000
+SAVEHIST=${HISTSIZE}
 
 # Show history
 case $HIST_STAMPS in

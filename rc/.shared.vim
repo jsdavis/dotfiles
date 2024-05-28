@@ -5,7 +5,6 @@ set hlsearch                    "highlighted search
 set incsearch                   "incremental search
 set ignorecase                  "ignore cases in search
 set smartcase                   "allow uppercase searches
-set number relativenumber       "line numbers
 
 "Better undo/redo
 nnoremap U <C-R>
@@ -29,3 +28,6 @@ vnoremap > >gv
 
 "Go ALL the way to the end
 vnoremap G G$
+
+"This unsets the "last search pattern" register by hitting return
+nnoremap <CR> :noh<CR><CR>

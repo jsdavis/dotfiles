@@ -4,3 +4,4 @@
 .DS_Store
 .python-version
 pyrightconfig.json
+.vscode

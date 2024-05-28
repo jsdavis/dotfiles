@@ -4,7 +4,7 @@ export RC=.zshrc
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$DOTFILES/bin:$PATH
 
 # Prompt is shortened when default user is on
 DEFAULT_USER=jsdavis
@@ -127,3 +127,8 @@ source "$ZSH/zsh-theme"
 # Set personal aliases, overriding any made by plugins
 # For a full list of active aliases, run `alias`.
 source ~/.aliases
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
+

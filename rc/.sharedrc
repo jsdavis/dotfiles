@@ -4,6 +4,9 @@ export DOTFILES=~/dotfiles
 # Default history file location, can be overriden in local rc files
 export HISTFILE=${DOTFILES}/history/.$(basename ${SHELL})_history
 
+# Brew on M1
+[ -d /opt/homebrew/bin ] && eval $(/opt/homebrew/bin/brew shellenv)
+
 # Preferred editor for local and remote sessions
 export EDITOR='vim'
 
@@ -11,6 +14,11 @@ export EDITOR='vim'
 func_exists() {
     declare -f $1 > /dev/null
     return $?
+}
+
+# Helper function to decide if a command exists (without needing a subprocess)
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
 }
 
 # Helper function to delete a line containing a pattern from a file
@@ -37,7 +45,7 @@ if [ -f ~/"$RC.local" ]; then
 fi
 
 # Fix GPG and its stupidity
-if [ -x "$(command -v gpg-agent)" ]; then
+if command_exists gpg-agent; then
     export GPG_TTY=$(tty)
     if [[ -f "${HOME}/.gnupg/.gpg-agent-info" ]]; then
         source "${HOME}/.gnupg/.gpg-agent-info"
@@ -49,10 +57,11 @@ fi
 export LESS="--no-init --quit-if-one-screen -R"
 
 # Initialize pyenv if we have it
-[ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
+command_exists pyenv && eval "$(pyenv init --path)"
+command_exists pyenv && eval "$(pyenv init -)"
 
 # Use pyenv virtualenv if we can
-if [ -x "$(command -v pyenv-virtualenv-init)" ]; then
+if command_exists pyenv-virtualenv-init; then
     eval "$(pyenv virtualenv-init -)"
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
     export VIRTUAL_ENV_DISABLE_PROMPT="true"
@@ -112,7 +121,7 @@ if [ -x "$(command -v pyenv-virtualenv-init)" ]; then
     }
 
 # If we have virtualenv, enable these helper functions
-elif [ -x "$(command -v virtualenv)" ]; then
+elif command_exists virtualenv; then
     # Default virtualenv home, can be overriden in local RC files
     export VIRTUALENV_HOME=~/virtualenv
 
@@ -147,19 +156,23 @@ elif [ -x "$(command -v virtualenv)" ]; then
     }
 fi
 
-# Initialize rbenv if we have it
+# Lazy load rbenv if we have it
 if [ -d "$HOME/.rbenv" ]; then
     export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
-    eval "$(rbenv init -)"
+    function rbenv() {
+        unset -f rbenv > /dev/null 2>&1
+        eval "$(command rbenv init -)"
+        rbenv "$@"
+      }
 fi
 
 # Import custom ls colors if they exist
-if [ -x "$(command -v dircolors)" ]; then
+if command_exists dircolors; then
     [ -e $DOTFILES/lib/colors/lscolors.sh ] && eval $(dircolors -b $DOTFILES/lib/colors/lscolors.sh) || eval $(dircolors -b)
 fi
 
 # Docker extensions
-if [ -x "$(command -v docker)" ]; then
+if command_exists docker; then
     docker() {
         if [[ "${1}" = "clean" ]]; then
             case $2 in
@@ -186,6 +199,19 @@ export PATH=${PATH}:${DOTFILES}/bin/git-scripts
 
 # Golang stuff
 [ -d ~/go/bin ] && export PATH=${PATH}:~/go/bin
+
+# Sublime on Mac
+subl_dir_mac="/Applications/Sublime Text.app/Contents/SharedSupport/bin"
+[ -d "${subl_dir_mac}" ] && export PATH="${subl_dir_mac}":${PATH}
+
+# VS Code on Mac
+vs_code_dir_mac="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+[ -d "${vs_code_dir_mac}" ] && export PATH="${vs_code_dir_mac}":${PATH}
+
+timeshell() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
 
 # NVM things
 # Defer initialization of nvm until nvm, node or a node-dependent command is

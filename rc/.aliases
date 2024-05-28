@@ -7,6 +7,10 @@ if [ ! -z $RC ]; then
         alias subrc="subl ~/$RC"
         alias sublrc="subl ~/$RC.local"
     fi
+    if [ -x "$(command -v code)" ]; then
+        alias vsrc="code ~/$RC"
+        alias vslrc="code ~/$RC.local"
+    fi
 fi
 
 if [ ! -z $PROFILE ]; then
@@ -16,6 +20,10 @@ if [ ! -z $PROFILE ]; then
     if [ -x "$(command -v subl)" ]; then
         alias subpr="subl ~/$PROFILE"
         alias sublpr="subl ~/$PROFILE.local"
+    fi
+    if [ -x "$(command -v code)" ]; then
+        alias vspr="code ~/$PROFILE"
+        alias vslpr="code ~/$PROFILE.local"
     fi
 fi
 
@@ -30,6 +38,12 @@ if [ -x "$(command -v subl)" ]; then
     alias subsh="subl $DOTFILES/rc/.sharedrc"
     alias suba="subl ~/.aliases"
     alias subvim="subl ~/.vimrc"
+fi
+if [ -x "$(command -v code)" ]; then
+    alias vsdot="code $DOTFILES"
+    alias vssh="code $DOTFILES/rc/.sharedrc"
+    alias vsa="code ~/.aliases"
+    alias vsvim="code ~/.vimrc"
 fi
 
 # Try not to clobber things

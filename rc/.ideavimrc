@@ -1,2 +1,16 @@
 "Shared configuration between vim and JetBrains IDEs
 source ~/.shared.vim
+
+map gh <Action>(ShowHoverInfo)
+map gd <Action>(GotoDeclaration)
+map gu <Action>(FindUsages)
+
+map ,b <Action>(GitToolBox.ShowInlineBlame)
+map ,sv <Action>(SplitVertically)
+map ,sh <Action>(SplitHorizontally)
+
+map <leader>r <Action>(SelectInProjectView)
+map <leader>m <Action>(ViewToolButtons)
+map <leader>t <Action>(HideAllWindows)
+
+set ideajoin

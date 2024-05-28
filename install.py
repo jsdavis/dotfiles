@@ -312,7 +312,7 @@ class Installer(object):
                 '"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"',
             'brew update',
             'brew analytics off',
-            'brew tap caskroom/cask'
+            'brew tap homebrew/cask'
         ]
         for cmd in commands:
             self.run_cmd(cmd)
@@ -332,7 +332,7 @@ class Installer(object):
         Install useful MacOS UI applications via homebrew cask
         """
         casks = ['iterm2', 'sublime-text', 'google-chrome', 'slack', 'postman', 'docker', 'spotify']
-        cmd = 'brew cask install {}'.format(' '.join(c for c in casks))
+        cmd = 'brew install --cask {}'.format(' '.join(c for c in casks))
         self.run_cmd(cmd)
 
     @install(ask='Install NVM?')

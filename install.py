@@ -322,7 +322,7 @@ class Installer(object):
         """
         Install useful MacOS CLI applications view homebrew
         """
-        packages = ['pyenv-virtualenv', 'wget', 'rename', 'fasd']
+        packages = ['pyenv-virtualenv', 'wget', 'rename', 'zoxide', 'fzf', 'ripgrep', 'gpg', 'pinentry-mac', 'docker']
         cmd = 'brew install {}'.format(' '.join(p for p in packages))
         self.run_cmd(cmd)
 
@@ -379,19 +379,36 @@ class Installer(object):
         for cmd in cmds:
             self.run_cmd(cmd)
 
+    @install(platforms=['rhel', 'linux'], ask='Install zoxide?')
+    def zoxide(self):
+        """
+        Install latest version of zoxide on linux, where package managers are slow to update
+        """
+        self.run_cmd(
+            'curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh'
+        )
+
+    @install(ask='Install uv?')
+    def uv(self):
+        """
+        Install latest version of uv, the best python installation and package manager
+        """
+        self.run_cmd('curl -LsSf https://astral.sh/uv/install.sh | sh')
+
     @install(platforms=['rhel', 'linux'], ask='Install os packages?')
     def os_packages(self):
         """
-        Install useful yum packages
+        Install useful system packages
         """
-        packages = ['fasd']
+        # Next, install anything else we might want
+        packages = []
+        if packages:
+            if self.platform == 'rhel':
+                cmd = 'sudo yum install -y {}'.format(' '.join(p for p in packages))
+            elif self.platform == 'linux':
+                cmd = 'sudo apt-get install -y {}'.format(' '.join(p for p in packages))
 
-        if self.platform == 'rhel':
-            cmd = 'sudo yum install -y {}'.format(' '.join(p for p in packages))
-        elif self.platform == 'linux':
-            cmd = 'sudo apt-get install -y {}'.format(' '.join(p for p in packages))
-
-        self.run_cmd(cmd)
+            self.run_cmd(cmd)
 
     @install(ask='Add global .gitignore?')
     def gitignore(self):

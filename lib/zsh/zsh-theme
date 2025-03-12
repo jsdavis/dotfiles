@@ -138,7 +138,10 @@ prompt_dir() {
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment white black "(`basename $virtualenv_path`)"
+    if [[ $virtualenv_path == */.venv ]]; then
+      virtualenv_path=$(dirname $virtualenv_path)
+    fi
+    prompt_segment white black "($(basename $virtualenv_path))"
   fi
 }
 
@@ -156,6 +159,10 @@ prompt_status() {
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }
 
+prompt_time() {
+  prompt_segment cyan black "%D{%T}"
+}
+
 osx_notify() {
   if [[ "$OSTYPE" = darwin* ]]; then
     $DOTFILES/bin/osx_notify "$(fc -ln -1)" "$RETVAL" &> /dev/null &
@@ -167,6 +174,7 @@ build_prompt() {
   RETVAL=$?
   osx_notify
   prompt_status
+  prompt_time
   prompt_virtualenv
   prompt_context
   prompt_dir

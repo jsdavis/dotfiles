@@ -47,7 +47,7 @@ VIRTUAL_ENV_DISABLE_PROMPT="true"
 
 # Which plugins would you like to load? (plugins can be found in $DOTFILES/plugins/*)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(fast-syntax-highlighting fasd colored-man-pages extract command-not-found zsh-autosuggestions local-completions)
+plugins=(fast-syntax-highlighting fzf zoxide colored-man-pages extract command-not-found zsh-autosuggestions local-completions)
 
 ###############################################################################
 # Initializes Oh My Zsh
@@ -131,4 +131,8 @@ source ~/.aliases
 autoload -Uz compinit
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
+
+# export to global and dedupe entries (lowercase are arrays that shadow PATH, FPATH, etc).
+# zsh docs recommend setting the flag for both interfaces.
+typeset -gU cdpath PATH path FPATH fpath MANPATH manpath
 

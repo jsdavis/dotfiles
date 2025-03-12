@@ -1,4 +1,5 @@
-if command_exists uvx; then
+if [ $commands[uv] ]; then
     autoload -U +X compinit && compinit
+    eval "$(uv --generate-shell-completion zsh)"
     eval "$(uvx --generate-shell-completion zsh)"
 fi

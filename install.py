@@ -322,7 +322,7 @@ class Installer(object):
         """
         Install useful MacOS CLI applications view homebrew
         """
-        packages = ['pyenv-virtualenv', 'wget', 'rename', 'zoxide', 'fzf', 'ripgrep', 'gpg', 'pinentry-mac', 'docker']
+        packages = ['pyenv-virtualenv', 'wget', 'rename', 'zoxide', 'fzf', 'ripgrep', 'gpg', 'pinentry-mac']
         cmd = 'brew install {}'.format(' '.join(p for p in packages))
         self.run_cmd(cmd)
 

@@ -53,6 +53,9 @@ Plug 'osyo-manga/vim-over'
 
 "Indentation guides
 Plug 'Yggdroot/indentLine'
+let g:vim_json_conceal=0     "stop hiding quotes in json
+let g:vim_markdown_conceal=0 "stop hiding markup characters in markdown
+
 
 call plug#end()
 
@@ -113,7 +116,6 @@ cabbrev s OverCommandLine
 
 "Options in alphabetical order
 set autoindent                  "keep indents when making new lines
-set background=dark             "fix for indent guides
 set backspace=indent,eol,start  "fix backspace
 set bs=2                        "more fix backspace
 set expandtab                   "expand tabs into spaces

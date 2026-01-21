@@ -136,3 +136,4 @@ fpath+=~/.zfunc
 # zsh docs recommend setting the flag for both interfaces.
 typeset -gU cdpath PATH path FPATH fpath MANPATH manpath
 
+

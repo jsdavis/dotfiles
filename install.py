@@ -14,6 +14,7 @@ import errno
 import shutil
 import filecmp
 import sys
+import platform
 from functools import partial, wraps
 
 # Got this from StackOverflow and it works so don't touch it
@@ -30,7 +31,7 @@ class NotSupportedError(Exception):
     pass
 
 
-def platform():
+def get_platform():
     if sys.platform == 'darwin':
         return 'mac'
     elif os.path.isdir('/mnt/c/Windows'):
@@ -57,7 +58,7 @@ def install(func=None, platforms=None, ask=None, name=None, order=10):
         platforms = ('wsl', 'mac', 'linux', 'rhel')
 
     func.is_install_step = True
-    func.supported = platform() in platforms
+    func.supported = get_platform() in platforms
     func.ask = '\n{} (y)/n '.format(ask) if ask is not None else None
     func.order = order
     func.pretty_name = name if name is not None else func.__name__.replace('_', ' ').title()
@@ -66,7 +67,7 @@ def install(func=None, platforms=None, ask=None, name=None, order=10):
     def decorator(self, skip_ask, *args, **kwargs):
         if not func.supported:
             raise NotSupportedError(
-                'This operation is not supported on the {} platform'.format(platform())
+                'This operation is not supported on the {} platform'.format(get_platform())
             )
 
         func.run = skip_ask or (ask_user(func.ask) if func.ask is not None else True)
@@ -82,7 +83,7 @@ def install(func=None, platforms=None, ask=None, name=None, order=10):
 
 class Installer(object):
     def __init__(self):
-        self.platform = platform()
+        self.platform = get_platform()
         self.dir = os.path.dirname(os.path.abspath(__file__))
 
         self.rc_dir = os.path.join(self.dir, 'rc')
@@ -379,11 +380,20 @@ class Installer(object):
         for cmd in cmds:
             self.run_cmd(cmd)
 
-    @install(platforms=['rhel', 'linux'], ask='Install zoxide?')
+    @install(platforms=['rhel', 'linux'], ask='Install zoxide and fzf?')
     def zoxide(self):
         """
         Install latest version of zoxide on linux, where package managers are slow to update
         """
+        arch = platform.processor()
+        if arch == "aarch64":
+            arch = "arm64"
+
+        target_dir = "~/.local/bin"
+        self.run_cmd(
+            'curl -sSfL https://github.com/junegunn/fzf/releases/download/v0.61.0/fzf-0.61.0-linux_{}.tar.gz | tar -xzvf - -C {}'.format(arch, target_dir)
+        )
+        self.run_cmd("chmod +x {}/fzf".format(target_dir))
         self.run_cmd(
             'curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh'
         )

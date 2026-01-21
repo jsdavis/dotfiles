@@ -7,6 +7,5 @@ if [ ! $commands[zoxide] ]; then
 fi
 
 if [ $commands[zoxide] ]; then
-    eval "$(zoxide init --cmd cd zsh)"
-    alias z='cd'
+    eval "$(zoxide init --cmd z zsh)"
 fi

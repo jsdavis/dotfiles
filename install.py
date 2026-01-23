@@ -388,6 +388,8 @@ class Installer(object):
         arch = platform.processor()
         if arch == "aarch64":
             arch = "arm64"
+        if arch == "x86_64":
+            arch = "amd64"
 
         target_dir = "~/.local/bin"
         self.run_cmd(
